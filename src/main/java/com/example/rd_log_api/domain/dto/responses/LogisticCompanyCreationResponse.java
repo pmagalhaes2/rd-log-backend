@@ -1,5 +1,6 @@
-package com.example.rd_log_api.domain.dto.requests;
+package com.example.rd_log_api.domain.dto.responses;
 
+import com.example.rd_log_api.domain.dto.requests.LogisticCompanyCreationRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Email;
@@ -17,7 +18,7 @@ import java.sql.Time;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties
-public class LogisticCompanyCreationRequest {
+public class LogisticCompanyCreationResponse {
     private Long id;
 
     @NotBlank
@@ -45,5 +46,14 @@ public class LogisticCompanyCreationRequest {
 
     private Boolean accepts_dangerous_loads = Boolean.FALSE;
 
+    public LogisticCompanyCreationResponse(LogisticCompanyCreationRequest logisticCompany) {
+        this.id = logisticCompany.getId();
+        this.name = logisticCompany.getName();
+        this.cnpj = logisticCompany.getCnpj();
+        this.opening_hours = logisticCompany.getOpening_hours();
+        this.closing_hours = logisticCompany.getClosing_hours();
+        this.phone_number = logisticCompany.getPhone_number();
+        this.email = logisticCompany.getEmail();
+        this.accepts_dangerous_loads = logisticCompany.getAccepts_dangerous_loads();
+    }
 }
-
