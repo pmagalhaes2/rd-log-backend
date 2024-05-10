@@ -1,6 +1,7 @@
 package com.example.rd_log_api.controllers;
 
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyCreationRequest;
+import com.example.rd_log_api.domain.dto.responses.LogisticCompanyCreationResponse;
 import com.example.rd_log_api.domain.entities.LogisticCompany;
 import com.example.rd_log_api.service.LogisticCompanyService;
 import jakarta.validation.Valid;
@@ -29,8 +30,8 @@ public class LogisticCompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<LogisticCompanyCreationRequest> createLogisticCompany(@RequestBody @Valid LogisticCompanyCreationRequest logisticCompany) {
+    public ResponseEntity<LogisticCompanyCreationResponse> createLogisticCompany(@RequestBody @Valid LogisticCompanyCreationRequest logisticCompany) {
         LogisticCompanyCreationRequest createdLogisticCompany = service.createLogisticCompany(logisticCompany);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdLogisticCompany);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new LogisticCompanyCreationResponse(createdLogisticCompany));
     }
 }
