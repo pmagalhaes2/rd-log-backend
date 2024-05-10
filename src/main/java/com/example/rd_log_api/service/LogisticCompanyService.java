@@ -1,6 +1,7 @@
 package com.example.rd_log_api.service;
 
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyCreationRequest;
+import com.example.rd_log_api.domain.dto.requests.LogisticCompanyDto;
 import com.example.rd_log_api.domain.entities.LogisticCompany;
 import com.example.rd_log_api.domain.mappers.LogisticCompanyMapper;
 import com.example.rd_log_api.repositories.LogisticCompanyRepository;
@@ -16,17 +17,22 @@ public class LogisticCompanyService {
     @Autowired
     private LogisticCompanyRepository repository;
 
-    public List<LogisticCompanyCreationRequest> getAll() {
-        return repository.findAll().stream().map(LogisticCompanyMapper::toDto).toList();
+    public List<LogisticCompanyDto> getAll() {
+        return repository.findAll().stream().map(LogisticCompanyMapper::toLogisticDto).toList();
     }
 
-    public LogisticCompany getById(Long id){
-        return repository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public LogisticCompanyDto getById(Long id) {
+        return LogisticCompanyMapper.toLogisticDto(repository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 
     public LogisticCompanyCreationRequest createLogisticCompany(LogisticCompanyCreationRequest logisticCompany) {
-        LogisticCompany newLogisticCompany = LogisticCompanyMapper.toEntity(logisticCompany);
+        LogisticCompany newLogisticCompany = LogisticCompanyMapper.toEntityFromCreationRequest(logisticCompany);
         repository.save(newLogisticCompany);
-        return LogisticCompanyMapper.toDto(newLogisticCompany);
+        return LogisticCompanyMapper.toCreationRequestDto(newLogisticCompany);
+    }
+
+    public void deleteLogisticCompany(Long id) {
+        LogisticCompanyDto foundedLogisticCompany = getById(id);
+        repository.delete(LogisticCompanyMapper.toEntityFromLogisticDto(foundedLogisticCompany));
     }
 }

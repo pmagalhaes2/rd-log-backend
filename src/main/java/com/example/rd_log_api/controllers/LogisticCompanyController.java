@@ -1,9 +1,11 @@
 package com.example.rd_log_api.controllers;
 
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyCreationRequest;
+import com.example.rd_log_api.domain.dto.requests.LogisticCompanyDto;
 import com.example.rd_log_api.domain.dto.responses.LogisticCompanyCreationResponse;
 import com.example.rd_log_api.domain.entities.LogisticCompany;
 import com.example.rd_log_api.service.LogisticCompanyService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,19 +21,27 @@ public class LogisticCompanyController {
     LogisticCompanyService service;
 
     @GetMapping
-    public ResponseEntity<List<LogisticCompanyCreationRequest>> getAll() {
+    public ResponseEntity<List<LogisticCompanyDto>> getAll() {
         return ResponseEntity.ok().body(service.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LogisticCompany> getById(@PathVariable Long id) {
-        LogisticCompany foundedLogisticCompany = service.getById(id);
+    public ResponseEntity<LogisticCompanyDto> getById(@PathVariable Long id) {
+        LogisticCompanyDto foundedLogisticCompany = service.getById(id);
         return ResponseEntity.ok().body(foundedLogisticCompany);
     }
 
     @PostMapping
     public ResponseEntity<LogisticCompanyCreationResponse> createLogisticCompany(@RequestBody @Valid LogisticCompanyCreationRequest logisticCompany) {
         LogisticCompanyCreationRequest createdLogisticCompany = service.createLogisticCompany(logisticCompany);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new LogisticCompanyCreationResponse(createdLogisticCompany));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new LogisticCompanyCreationResponse(createdLogisticCompany));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity deleteLogisticCompany(@PathVariable Long id) {
+        service.deleteLogisticCompany(id);
+        return ResponseEntity.noContent().build();
     }
 }
