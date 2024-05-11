@@ -28,12 +28,9 @@ public class ErrorResponse {
         return new ErrorResponse(message);
     }
 
+
     public static ErrorResponse createFromException(EntityNotFoundException ex) {
-        var violations = ex
-                .getFieldErrors()
-                .stream()
-                .map(it -> new ErrorMessage(it.getField(), it.getDefaultMessage()))
-                .collect(Collectors.toList());
-        return new ErrorResponse("Validation errors", violations);
+        String message = "Entity not found: " + ex.getMessage();
+        return new ErrorResponse(message);
     }
 }
