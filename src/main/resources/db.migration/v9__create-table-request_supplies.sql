@@ -7,5 +7,5 @@ CREATE TABLE request_supplies (
     payment_id INT NOT NULL,
     FOREIGN KEY (manufacturer_id) REFERENCES Manufacturer(id),
     FOREIGN KEY (products_id) REFERENCES Products(id),
-    FOREIGN KEY (payment_id) REFERENCES Payment(id),
+    FOREIGN KEY (payment_id) REFERENCES Payment(id)
 );

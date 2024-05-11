@@ -5,7 +5,7 @@ CREATE TABLE logistic_companies(
     opening_hours TIME NOT NULL,
     closing_hours TIME NOT NULL,
     --phone_number VARCHAR(11) NOT NULL,
-    email VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
     accepts_dangerous_loads BOOLEAN DEFAULT FALSE
 );
 
