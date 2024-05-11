@@ -2,8 +2,9 @@ package com.example.rd_log_api.domain.dto;
 
 import com.example.rd_log_api.domain.dto.exception.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.Data;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public class ErrorResponse {
         return new ErrorResponse(message);
     }
 
-    public static ErrorResponse createFromException(MethodArgumentNotValidException ex) {
+    public static ErrorResponse createFromException(EntityNotFoundException ex) {
         var violations = ex
                 .getFieldErrors()
                 .stream()
