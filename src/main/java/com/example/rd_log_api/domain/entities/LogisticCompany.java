@@ -1,11 +1,6 @@
 package com.example.rd_log_api.domain.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +19,7 @@ public class LogisticCompany {
 
     private String name;
 
+    @Column(unique = true)
     private String cnpj;
 
     @Column(name="opening_hours")
@@ -35,6 +31,7 @@ public class LogisticCompany {
     @Column(name="phone_number")
     private String phone_number;
 
+    @Column(unique = true)
     private String email;
 
     @Column(name="accepts_dangerous_loads")
