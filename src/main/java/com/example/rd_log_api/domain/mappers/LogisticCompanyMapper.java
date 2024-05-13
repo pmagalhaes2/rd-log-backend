@@ -2,6 +2,7 @@ package com.example.rd_log_api.domain.mappers;
 
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyCreationRequest;
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyDto;
+import com.example.rd_log_api.domain.dto.requests.LogisticCompanyUpdateRequest;
 import com.example.rd_log_api.domain.entities.LogisticCompany;
 
 
@@ -55,6 +56,17 @@ public class LogisticCompanyMapper {
                 entity.getPhone_number(),
                 entity.getEmail(),
                 entity.getAccepts_dangerous_loads()
+        );
+    }
+
+    public static LogisticCompanyDto toLogisticDtoFromUpdateRequest(LogisticCompanyUpdateRequest request) {
+        return new LogisticCompanyDto(
+                request.getName(),
+                request.getOpening_hours(),
+                request.getClosing_hours(),
+                request.getPhone_number(),
+                request.getEmail(),
+                request.getAccepts_dangerous_loads()
         );
     }
 
