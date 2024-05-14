@@ -19,6 +19,6 @@ public class User {
     @Column(name = "username", nullable = false, unique = true, length = 255) // Vamos manter usuário ou modificar pra e-mail? Confirmar com as meninas.
     private String username;
 
-    @Column(name = "paswword", length = 8) //Vamos manter o tamanho 8?
+    @Column(name = "password", length = 8) //Vamos manter o tamanho 8?
     private String password;
 }

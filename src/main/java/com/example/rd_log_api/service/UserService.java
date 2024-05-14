@@ -70,4 +70,9 @@ public class UserService implements IUserService{
             return new LoginResponse("Usuário não encontrado", false);
         }
     }
+
+    @Override
+    public UserDto userUpdate(int id, UserDto user) {
+        return null;
+    }
 }
