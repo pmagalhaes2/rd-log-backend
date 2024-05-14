@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/")
-public class BasicController {
+public class DistanceController {
 
     @Autowired
     DistanceMatrixService distanceMatrixService;

@@ -24,6 +24,7 @@ public class LogisticCompany {
 
     private String name;
 
+    @Column(unique = true)
     private String cnpj;
 
     @Column(name="opening_hours")
@@ -35,9 +36,13 @@ public class LogisticCompany {
     @Column(name="phone_number")
     private String phone_number;
 
+    @Column(unique = true)
     private String email;
 
     @Column(name="accepts_dangerous_loads")
     private Boolean accepts_dangerous_loads = Boolean.FALSE;
 
+    private String password;
+
+    public LogisticCompany(Long id, String name, String cnpj, Time openingHours, Time closingHours, String phoneNumber, String email, Boolean acceptsDangerousLoads) {}
 }
