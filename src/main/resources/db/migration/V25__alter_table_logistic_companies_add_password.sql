@@ -1,0 +1,1 @@
+ALTER TABLE logistic_companies ADD COLUMN password CHAR(8) NOT NULL;
