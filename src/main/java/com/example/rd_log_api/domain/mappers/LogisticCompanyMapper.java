@@ -16,7 +16,8 @@ public class LogisticCompanyMapper {
                 request.getClosing_hours(),
                 request.getPhone_number(),
                 request.getEmail(),
-                request.getAccepts_dangerous_loads()
+                request.getAccepts_dangerous_loads(),
+                request.getPassword()
         );
     }
 
@@ -42,7 +43,8 @@ public class LogisticCompanyMapper {
                 entity.getClosing_hours(),
                 entity.getPhone_number(),
                 entity.getEmail(),
-                entity.getAccepts_dangerous_loads()
+                entity.getAccepts_dangerous_loads(),
+                entity.getPassword()
         );
     }
 

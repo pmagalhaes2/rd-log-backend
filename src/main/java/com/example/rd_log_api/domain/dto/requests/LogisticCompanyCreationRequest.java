@@ -45,5 +45,8 @@ public class LogisticCompanyCreationRequest {
 
     private Boolean accepts_dangerous_loads = Boolean.FALSE;
 
+    @NotBlank
+    @NotEmpty
+    private String password;
 }
 
