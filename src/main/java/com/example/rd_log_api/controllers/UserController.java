@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/user")
 public class UserController {
     private final IUserService service;
 
@@ -54,7 +54,6 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    // login
     @PostMapping(path = "/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDTO)
     {

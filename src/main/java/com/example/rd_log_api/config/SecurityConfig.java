@@ -46,13 +46,19 @@ public class SecurityConfig {
         httpSecurity
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(r -> r.requestMatchers(new OrRequestMatcher(List.of(
+                .authorizeHttpRequests(r -> r
+                        .requestMatchers(new OrRequestMatcher(List.of(
                                 new AntPathRequestMatcher("/swagger-ui"),
                                 new AntPathRequestMatcher("/swagger-ui/**"),
                                 new AntPathRequestMatcher("/v3/api-docs/**"),
                                 new AntPathRequestMatcher("/h2-console/**")
                         ))).permitAll()
-                        .requestMatchers(antMatcher(HttpMethod.POST, "/login/**"), antMatcher(HttpMethod.GET, "/login/**")).permitAll())
+                        .requestMatchers(antMatcher(HttpMethod.GET)).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.POST)).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.PUT)).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.DELETE)).hasAnyRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
                 .httpBasic(Customizer.withDefaults())
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
 
