@@ -32,14 +32,14 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public UserDto getUser(int id) {
+    public UserDto getUser(Long id) {
         return repository.findById(id)
                 .map(UserMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
     }
 
     @Override
-    public UserDto updateUser(int id, UserDto user) {
+    public UserDto updateUser(Long id, UserDto user) {
         User userExistent = repository.findById(id).orElse(null);
         if (userExistent != null) {
             userExistent.setEmail(user.getEmail());
@@ -52,13 +52,13 @@ public class UserService implements IUserService{
 
 
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(Long id) {
         repository.deleteById(id);
     }
 
     @Override
     public LoginResponse loginUser(LoginDto loginDTO) {
-        String email = loginDTO.getUsername();
+        String email = loginDTO.getEmail();
         String password = loginDTO.getPassword();
 
         User user = repository.findByEmail(email);
@@ -76,7 +76,7 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public UserDto userUpdate(int id, UserDto user) {
+    public UserDto userUpdate(Long id, UserDto user) {
         return null;
     }
 }

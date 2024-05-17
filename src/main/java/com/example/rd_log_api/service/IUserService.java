@@ -9,9 +9,9 @@ public interface IUserService {
 
     UserDto createUser(UserDto user);
     List<UserDto> listUsers();
-    UserDto getUser(int id);
-    UserDto updateUser(int id, UserDto user);
-    void deleteUser(int id);
+    UserDto getUser(Long id);
+    UserDto updateUser(Long id, UserDto user);
+    void deleteUser(Long id);
     LoginResponse loginUser(LoginDto loginDTO);
-    UserDto userUpdate(int id, UserDto user);
+    UserDto userUpdate(Long id, UserDto user);
 }

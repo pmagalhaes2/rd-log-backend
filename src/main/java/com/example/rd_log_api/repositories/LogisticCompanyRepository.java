@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LogisticCompanyRepository extends JpaRepository<LogisticCompany, Long> {
+    LogisticCompany findByEmail(String email);
 }

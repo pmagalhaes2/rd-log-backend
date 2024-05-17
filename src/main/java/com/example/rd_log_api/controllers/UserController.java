@@ -32,13 +32,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable("id") int id) {
+    public ResponseEntity<UserDto> getUser(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.getUser(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> userUpdate(
-            @PathVariable("id") int id,
+            @PathVariable("id") Long id,
             @RequestBody UserDto user
     ) {
         UserDto userUpdated = service.userUpdate(id, user);
@@ -49,13 +49,13 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable("id") int id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         service.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(path = "/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDTO)
+    @PostMapping("/login")
+    public ResponseEntity loginUser(@RequestBody LoginDto loginDTO)
     {
         LoginResponse loginResponse = service.loginUser(loginDTO);
         return ResponseEntity.ok(loginResponse);

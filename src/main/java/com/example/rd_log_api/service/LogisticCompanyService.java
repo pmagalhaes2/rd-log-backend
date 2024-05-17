@@ -1,5 +1,6 @@
 package com.example.rd_log_api.service;
 
+import com.example.rd_log_api.domain.dto.LoginDto;
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyCreationRequest;
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyDto;
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyUpdateRequest;
@@ -61,5 +62,12 @@ public class LogisticCompanyService {
     public void deleteLogisticCompany(Long id) throws NotFoundException {
         LogisticCompanyDto foundedLogisticCompany = getById(id);
         repository.delete(LogisticCompanyMapper.toEntityFromLogisticDto(foundedLogisticCompany));
+    }
+
+    public LogisticCompany login(LoginDto loginDto) {
+        String email = loginDto.getEmail();
+        String password = loginDto.getPassword();
+
+        return repository.findByEmail(email);
     }
 }
