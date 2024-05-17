@@ -17,8 +17,12 @@ import java.util.List;
 @Service
 public class LogisticCompanyService {
 
+    private final LogisticCompanyRepository repository;
+
     @Autowired
-    private LogisticCompanyRepository repository;
+    public LogisticCompanyService(LogisticCompanyRepository repository) {
+        this.repository = repository;
+    }
 
     public List<LogisticCompanyDto> getAll() {
         return repository.findAll().stream().map(LogisticCompanyMapper::toLogisticDto).toList();

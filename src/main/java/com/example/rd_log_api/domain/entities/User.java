@@ -10,15 +10,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tb_usuarios")
+@Table(name = "logistic_companies")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "username", nullable = false, unique = true, length = 255) // Vamos manter usuário ou modificar pra e-mail? Confirmar com as meninas.
-    private String username;
+    @Column(name = "email", nullable = false, unique = true, length = 50)
+    private String email;
 
-    @Column(name = "password", length = 8) //Vamos manter o tamanho 8?
+    @Column(name = "password", length = 8)
     private String password;
+
 }

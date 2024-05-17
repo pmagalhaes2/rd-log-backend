@@ -39,11 +39,11 @@ public class LogisticCompanyMapper {
                 entity.getId(),
                 entity.getName(),
                 entity.getCnpj(),
-                entity.getOpening_hours(),
-                entity.getClosing_hours(),
-                entity.getPhone_number(),
+                entity.getOpeningHours(),
+                entity.getClosingHours(),
+                entity.getPhoneNumber(),
                 entity.getEmail(),
-                entity.getAccepts_dangerous_loads(),
+                entity.getAcceptsDangerousLoads(),
                 entity.getPassword()
         );
     }
@@ -53,11 +53,11 @@ public class LogisticCompanyMapper {
                 entity.getId(),
                 entity.getName(),
                 entity.getCnpj(),
-                entity.getOpening_hours(),
-                entity.getClosing_hours(),
-                entity.getPhone_number(),
+                entity.getOpeningHours(),
+                entity.getClosingHours(),
+                entity.getPhoneNumber(),
                 entity.getEmail(),
-                entity.getAccepts_dangerous_loads()
+                entity.getAcceptsDangerousLoads()
         );
     }
 

@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.Time;
-
 @Entity
 @Getter
 @Table(name = "logistic_companies")
@@ -28,19 +27,19 @@ public class LogisticCompany {
     private String cnpj;
 
     @Column(name="opening_hours")
-    private Time opening_hours;
+    private Time openingHours;
 
     @Column(name="closing_hours")
-    private Time closing_hours;
+    private Time closingHours;
 
     @Column(name="phone_number")
-    private String phone_number;
+    private String phoneNumber;
 
     @Column(unique = true)
     private String email;
 
     @Column(name="accepts_dangerous_loads")
-    private Boolean accepts_dangerous_loads = Boolean.FALSE;
+    private Boolean acceptsDangerousLoads = Boolean.FALSE;
 
     private String password;
 

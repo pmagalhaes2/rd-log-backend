@@ -5,6 +5,7 @@ import com.example.rd_log_api.domain.dto.UserDto;
 import com.example.rd_log_api.domain.entities.User;
 import com.example.rd_log_api.domain.mappers.UserMapper;
 import com.example.rd_log_api.repositories.IUserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,20 +33,23 @@ public class UserService implements IUserService{
 
     @Override
     public UserDto getUser(int id) {
-        return UserMapper.toDto(repository.findById(id).orElse(null));
+        return repository.findById(id)
+                .map(UserMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
     }
 
     @Override
     public UserDto updateUser(int id, UserDto user) {
         User userExistent = repository.findById(id).orElse(null);
         if (userExistent != null) {
-            userExistent.setUsername(user.getUsername());
+            userExistent.setEmail(user.getEmail());
             String passwordEncoded = passwordEncoder.encode(user.getPassword());
             userExistent.setPassword(passwordEncoded);
             return UserMapper.toDto(repository.save(userExistent));
         }
         return null;
     }
+
 
     @Override
     public void deleteUser(int id) {
@@ -54,10 +58,10 @@ public class UserService implements IUserService{
 
     @Override
     public LoginResponse loginUser(LoginDto loginDTO) {
-        String username = loginDTO.getUsername();
+        String email = loginDTO.getUsername();
         String password = loginDTO.getPassword();
 
-        User user = repository.findByUsername(username);
+        User user = repository.findByEmail(email);
 
         if (user != null) {
             String passwordEncoded = user.getPassword();

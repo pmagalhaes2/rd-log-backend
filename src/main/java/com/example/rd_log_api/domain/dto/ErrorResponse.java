@@ -6,6 +6,8 @@ import lombok.Data;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class ErrorResponse {
@@ -18,7 +20,7 @@ public class ErrorResponse {
     }
 
     private ErrorResponse(String message, Collection<ErrorMessage> errors) {
-        this(message);
+        this.message = message;
         this.errors = errors;
     }
 
@@ -27,9 +29,11 @@ public class ErrorResponse {
         return new ErrorResponse(message);
     }
 
-
     public static ErrorResponse createFromException(MethodArgumentNotValidException ex) {
-        String message = "Entity not found: " + ex.getMessage();
-        return new ErrorResponse(message);
+        String message = "Validation failed";
+        List<ErrorMessage> errorMessages = ex.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> new ErrorMessage(fieldError.getField(), fieldError.getDefaultMessage()))
+                .collect(Collectors.toList());
+        return new ErrorResponse(message, errorMessages);
     }
 }
