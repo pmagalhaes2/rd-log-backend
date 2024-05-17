@@ -6,7 +6,7 @@ import com.example.rd_log_api.domain.dto.requests.LogisticCompanyCreationRequest
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyDto;
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyUpdateRequest;
 import com.example.rd_log_api.domain.dto.responses.LogisticCompanyCreationResponse;
-import com.example.rd_log_api.domain.entities.LogisticCompany;
+import com.example.rd_log_api.service.LoginResponse;
 import com.example.rd_log_api.service.LogisticCompanyService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -20,8 +20,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/logistic-companies")
 public class LogisticCompanyController {
+
+    private final LogisticCompanyService service;
+
     @Autowired
-    LogisticCompanyService service;
+    public LogisticCompanyController(LogisticCompanyService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<List<LogisticCompanyDto>> getAll() {
@@ -49,14 +54,14 @@ public class LogisticCompanyController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity deleteLogisticCompany(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<Void> deleteLogisticCompany(@PathVariable Long id) throws NotFoundException {
         service.deleteLogisticCompany(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LogisticCompany> login(@RequestBody LoginDto loginDto) {
-        LogisticCompany loginResponse = service.login(loginDto);
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginDto loginDTO) {
+        LoginResponse loginResponse = service.loginUser(loginDTO);
         return ResponseEntity.ok(loginResponse);
     }
 }

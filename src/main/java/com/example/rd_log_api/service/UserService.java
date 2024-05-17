@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements IUserService{
+public class UserService implements IUserService {
     private final IUserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
@@ -50,10 +50,13 @@ public class UserService implements IUserService{
         return null;
     }
 
-
     @Override
     public void deleteUser(Long id) {
-        repository.deleteById(id);
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("User not found with id: " + id);
+        }
     }
 
     @Override
@@ -64,19 +67,18 @@ public class UserService implements IUserService{
         User user = repository.findByEmail(email);
 
         if (user != null) {
-            String passwordEncoded = user.getPassword();
-            if (passwordEncoder.matches(password, passwordEncoded)) {
-                return new LoginResponse("Login bem-sucedido", true);
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return new LoginResponse("Dados incorretos, tente novamente.", user.getId());
             } else {
-                return new LoginResponse("Senha incorreta", false);
+                return new LoginResponse("Dados incorretos, tente novamente.", null);
             }
         } else {
-            return new LoginResponse("Usuário não encontrado", false);
+            return new LoginResponse("Dados incorretos, tente novamente.", null);
         }
     }
 
     @Override
     public UserDto userUpdate(Long id, UserDto user) {
-        return null;
+        return updateUser(id, user);
     }
 }

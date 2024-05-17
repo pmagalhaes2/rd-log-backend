@@ -40,7 +40,6 @@ public class LogisticCompanyService {
         return LogisticCompanyMapper.toCreationRequestDto(newLogisticCompany);
     }
 
-
     @Transactional
     public LogisticCompanyDto updateLogisticCompany(Long id, LogisticCompanyUpdateRequest logisticCompany) throws NotFoundException {
         LogisticCompanyDto foundedLogisticCompany = getById(id);
@@ -70,4 +69,14 @@ public class LogisticCompanyService {
 
         return repository.findByEmail(email);
     }
+
+    public LoginResponse loginUser(LoginDto loginDto) {
+        LogisticCompany logisticCompany = repository.findByEmail(loginDto.getEmail());
+        if (logisticCompany != null && logisticCompany.getPassword() != null && logisticCompany.getPassword().equals(loginDto.getPassword())) {
+            return new LoginResponse("Login realizado com sucesso.", logisticCompany.getId());
+        } else {
+            throw new RuntimeException("Dados inválidos, tente novamente.");
+        }
+    }
+
 }

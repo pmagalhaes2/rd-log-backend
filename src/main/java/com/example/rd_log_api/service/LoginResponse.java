@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginResponse {
     private String message;
-    private Boolean status;
-
+    private Long logisticCompanyId;
 }

@@ -54,12 +54,4 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/login")
-    public ResponseEntity loginUser(@RequestBody LoginDto loginDTO)
-    {
-        LoginResponse loginResponse = service.loginUser(loginDTO);
-        return ResponseEntity.ok(loginResponse);
-    }
-
-
 }
