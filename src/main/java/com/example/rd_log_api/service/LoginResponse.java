@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class LoginResponse {
     private String message;
     private Long logisticCompanyId;
+    private String logisticCompanyName;
 }

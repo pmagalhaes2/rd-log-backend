@@ -73,7 +73,7 @@ public class LogisticCompanyService {
     public LoginResponse loginUser(LoginDto loginDto) {
         LogisticCompany logisticCompany = repository.findByEmail(loginDto.getEmail());
         if (logisticCompany != null && logisticCompany.getPassword() != null && logisticCompany.getPassword().equals(loginDto.getPassword())) {
-            return new LoginResponse("Login realizado com sucesso.", logisticCompany.getId());
+            return new LoginResponse("Login realizado com sucesso.", logisticCompany.getId(), logisticCompany.getName());
         } else {
             throw new RuntimeException("Dados inválidos, tente novamente.");
         }

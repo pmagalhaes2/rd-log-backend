@@ -66,14 +66,10 @@ public class UserService implements IUserService {
 
         User user = repository.findByEmail(email);
 
-        if (user != null) {
-            if (passwordEncoder.matches(password, user.getPassword())) {
-                return new LoginResponse("Dados incorretos, tente novamente.", user.getId());
-            } else {
-                return new LoginResponse("Dados incorretos, tente novamente.", null);
-            }
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            return new LoginResponse("Login realizado com sucesso.", user.getId(), user.getName());
         } else {
-            return new LoginResponse("Dados incorretos, tente novamente.", null);
+            return new LoginResponse("Dados incorretos, tente novamente.", null, null);
         }
     }
 
