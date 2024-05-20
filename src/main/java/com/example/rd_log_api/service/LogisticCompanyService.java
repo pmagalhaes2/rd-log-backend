@@ -63,14 +63,7 @@ public class LogisticCompanyService {
         repository.delete(LogisticCompanyMapper.toEntityFromLogisticDto(foundedLogisticCompany));
     }
 
-    public LogisticCompany login(LoginDto loginDto) {
-        String email = loginDto.getEmail();
-        String password = loginDto.getPassword();
-
-        return repository.findByEmail(email);
-    }
-
-    public LoginResponse loginUser(LoginDto loginDto) {
+    public LoginResponse login(LoginDto loginDto) {
         LogisticCompany logisticCompany = repository.findByEmail(loginDto.getEmail());
         if (logisticCompany != null && logisticCompany.getPassword() != null && logisticCompany.getPassword().equals(loginDto.getPassword())) {
             return new LoginResponse("Login realizado com sucesso.", logisticCompany.getId(), logisticCompany.getName());

@@ -60,8 +60,8 @@ public class LogisticCompanyController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginDto loginDTO) {
-        LoginResponse loginResponse = service.loginUser(loginDTO);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginDto loginDTO) {
+        LoginResponse loginResponse = service.login(loginDTO);
         return ResponseEntity.ok(loginResponse);
     }
 }
