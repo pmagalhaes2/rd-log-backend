@@ -9,10 +9,12 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Time;
 @Entity
 @Getter
+@Setter
 @Table(name = "logistic_companies")
 @NoArgsConstructor
 @AllArgsConstructor
