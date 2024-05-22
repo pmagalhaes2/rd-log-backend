@@ -1,0 +1,2 @@
+ALTER TABLE employee
+ALTER COLUMN password TYPE VARCHAR(8);
