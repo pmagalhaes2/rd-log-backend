@@ -2,6 +2,7 @@ package com.example.rd_log_api.service;
 
 import com.example.rd_log_api.domain.dto.LoginDto;
 import com.example.rd_log_api.domain.dto.UserDto;
+import com.example.rd_log_api.domain.dto.exception.NotFoundException;
 import com.example.rd_log_api.domain.entities.User;
 import com.example.rd_log_api.domain.mappers.UserMapper;
 import com.example.rd_log_api.repositories.IUserRepository;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.util.List;
 
 @Service
@@ -35,27 +37,21 @@ public class UserService implements IUserService {
     public UserDto getUser(Long id) {
         return repository.findById(id)
                 .map(UserMapper::toDto)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não localizado pelo ID" + id));
     }
 
     @Override
     public UserDto updateUser(Long id, UserDto user) {
-        User userExistent = repository.findById(id).orElse(null);
-        if (userExistent != null) {
-            userExistent.setEmail(user.getEmail());
-            String passwordEncoded = passwordEncoder.encode(user.getPassword());
-            userExistent.setPassword(passwordEncoded);
-            return UserMapper.toDto(repository.save(userExistent));
-        }
         return null;
     }
+
 
     @Override
     public void deleteUser(Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
         } else {
-            throw new EntityNotFoundException("User not found with id: " + id);
+            throw new EntityNotFoundException("Usuário não vinculado ao ID" + id);
         }
     }
 
@@ -75,6 +71,19 @@ public class UserService implements IUserService {
 
     @Override
     public UserDto userUpdate(Long id, UserDto user) {
-        return updateUser(id, user);
+        return null;
+    }
+
+    @Override
+    public UserDto updateUser(Long id, UserDto user, String cnpj, String phone_number, Time opining_hours, Time closing_hours) throws NotFoundException {
+        User userExistent = repository.findById(id).orElse(null);
+        if (userExistent != null) {
+            userExistent.setName(user.getName());
+            userExistent.setEmail(user.getEmail());
+            String passwordEncoded = passwordEncoder.encode(user.getPassword());
+            userExistent.setPassword(passwordEncoded);
+            return UserMapper.toDto(repository.save(userExistent));
+        }
+        return null;
     }
 }

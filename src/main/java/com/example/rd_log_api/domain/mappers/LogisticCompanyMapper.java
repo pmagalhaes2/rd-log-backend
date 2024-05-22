@@ -5,7 +5,6 @@ import com.example.rd_log_api.domain.dto.requests.LogisticCompanyDto;
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyUpdateRequest;
 import com.example.rd_log_api.domain.entities.LogisticCompany;
 
-
 public class LogisticCompanyMapper {
     public static LogisticCompany toEntityFromCreationRequest(LogisticCompanyCreationRequest request) {
         return new LogisticCompany(
@@ -60,16 +59,4 @@ public class LogisticCompanyMapper {
                 entity.getAcceptsDangerousLoads()
         );
     }
-
-    public static LogisticCompanyDto toLogisticDtoFromUpdateRequest(LogisticCompanyUpdateRequest request) {
-        return new LogisticCompanyDto(
-                request.getName(),
-                request.getOpening_hours(),
-                request.getClosing_hours(),
-                request.getPhone_number(),
-                request.getEmail(),
-                request.getAccepts_dangerous_loads()
-        );
-    }
-
 }

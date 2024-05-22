@@ -42,25 +42,29 @@ public class LogisticCompanyService {
 
     @Transactional
     public LogisticCompanyDto updateLogisticCompany(Long id, LogisticCompanyUpdateRequest logisticCompany) throws NotFoundException {
-        LogisticCompanyDto foundedLogisticCompany = getById(id);
-        foundedLogisticCompany.setName(logisticCompany.getName());
-        foundedLogisticCompany.setOpening_hours(logisticCompany.getOpening_hours());
-        foundedLogisticCompany.setClosing_hours(logisticCompany.getClosing_hours());
-        foundedLogisticCompany.setPhone_number(logisticCompany.getPhone_number());
-        foundedLogisticCompany.setEmail(logisticCompany.getEmail());
-        foundedLogisticCompany.setAccepts_dangerous_loads(
+        LogisticCompany existingLogisticCompany = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(LogisticCompanyDto.class, String.valueOf(id)));
+        existingLogisticCompany.setName(logisticCompany.getName());
+        existingLogisticCompany.setOpeningHours(logisticCompany.getOpening_hours());
+        existingLogisticCompany.setClosingHours(logisticCompany.getClosing_hours());
+        existingLogisticCompany.setPhoneNumber(logisticCompany.getPhone_number());
+        existingLogisticCompany.setEmail(logisticCompany.getEmail());
+        existingLogisticCompany.setAcceptsDangerousLoads(
                 logisticCompany.getAccepts_dangerous_loads() != null ?
                         logisticCompany.getAccepts_dangerous_loads() :
-                        foundedLogisticCompany.getAccepts_dangerous_loads());
+                        existingLogisticCompany.getAcceptsDangerousLoads());
+        LogisticCompany updatedLogisticCompany = repository.save(existingLogisticCompany);
 
-        return LogisticCompanyMapper.toLogisticDto(
-                repository.save(LogisticCompanyMapper.toEntityFromLogisticDto(foundedLogisticCompany)));
+        return LogisticCompanyMapper.toLogisticDto(updatedLogisticCompany);
     }
 
     @Transactional
     public void deleteLogisticCompany(Long id) throws NotFoundException {
-        LogisticCompanyDto foundedLogisticCompany = getById(id);
-        repository.delete(LogisticCompanyMapper.toEntityFromLogisticDto(foundedLogisticCompany));
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new NotFoundException(LogisticCompany.class, String.valueOf(id));
+        }
     }
 
     public LoginResponse login(LoginDto loginDto) {
@@ -71,5 +75,4 @@ public class LogisticCompanyService {
             throw new RuntimeException("Dados inválidos, tente novamente.");
         }
     }
-
 }

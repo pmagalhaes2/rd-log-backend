@@ -7,6 +7,8 @@ public class UserMapper {
 
     public static User toEntity(UserDto dto){
         return User.builder()
+                .id(dto.getId())
+                .name(dto.getName())
                 .email(dto.getEmail())
                 .password(dto.getPassword())
                 .build();
@@ -14,9 +16,10 @@ public class UserMapper {
 
     public static UserDto toDto(User entity){
         return UserDto.builder()
+                .id(entity.getId())
+                .name(entity.getName())
                 .email(entity.getEmail())
                 .password(entity.getPassword())
-                .id(entity.getId())
                 .build();
     }
 }

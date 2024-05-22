@@ -10,11 +10,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "logistic_companies")
+@Table(name = "employee")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "email", nullable = false, unique = true, length = 50)
     private String email;
@@ -22,7 +25,5 @@ public class User {
     @Column(name = "password", length = 8)
     private String password;
 
-    @Column(name = "name")
-    private String name;
 
 }

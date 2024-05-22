@@ -19,22 +19,20 @@ import org.springframework.security.web.util.matcher.OrRequestMatcher;
 
 import java.util.List;
 
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder()
+    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
+        UserDetails user = User.builder()
                 .username("Transporter")
-                .password("Abc@123.")
+                .password(passwordEncoder.encode("Abc@123."))
                 .roles("USER")
                 .build();
-        UserDetails admin = User.withDefaultPasswordEncoder()
+        UserDetails admin = User.builder()
                 .username("Admin")
-                .password("Admin@1.")
+                .password(passwordEncoder.encode("Admin@1."))
                 .roles("ADMIN")
                 .build();
         return new InMemoryUserDetailsManager(user, admin);
@@ -43,7 +41,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors(Customizer.withDefaults())
+                .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(r -> r
                         .requestMatchers(new OrRequestMatcher(List.of(
@@ -52,10 +50,10 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/v3/api-docs/**"),
                                 new AntPathRequestMatcher("/h2-console/**")
                         ))).permitAll()
-                        .requestMatchers(antMatcher(HttpMethod.GET)).permitAll()
-                        .requestMatchers(antMatcher(HttpMethod.POST)).permitAll()
-                        .requestMatchers(antMatcher(HttpMethod.PUT)).permitAll()
-                        .requestMatchers(antMatcher(HttpMethod.DELETE)).hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET).permitAll()
+                        .requestMatchers(HttpMethod.POST).permitAll()
+                        .requestMatchers(HttpMethod.PUT).permitAll()
+                        .requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

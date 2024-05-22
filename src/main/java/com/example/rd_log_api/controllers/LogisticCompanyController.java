@@ -59,6 +59,8 @@ public class LogisticCompanyController {
         return ResponseEntity.noContent().build();
     }
 
+
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginDto loginDTO) {
         LoginResponse loginResponse = service.login(loginDTO);
