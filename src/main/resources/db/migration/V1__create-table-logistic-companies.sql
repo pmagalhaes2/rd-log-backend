@@ -5,8 +5,6 @@ CREATE TABLE logistic_companies(
     opening_hours TIME NOT NULL,
     closing_hours TIME NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    password TYPE VARCHAR(8) NOT NULL,
-    address INT,
-    FOREIGN KEY (address_id) REFERENCES Address(id),
+    password VARCHAR(8) NOT NULL
 
 );
