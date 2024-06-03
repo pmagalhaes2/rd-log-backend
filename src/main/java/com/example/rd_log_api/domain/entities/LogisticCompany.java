@@ -40,10 +40,7 @@ public class LogisticCompany {
     @Column(unique = true)
     private String email;
 
-    @Column(name="accepts_dangerous_loads")
-    private Boolean acceptsDangerousLoads = Boolean.FALSE;
-
     private String password;
 
-    public LogisticCompany(Long id, String name, String cnpj, Time openingHours, Time closingHours, String phoneNumber, String email, Boolean acceptsDangerousLoads) {}
+    public LogisticCompany(Long id, String name, String cnpj, Time openingHours, Time closingHours, String phoneNumber, String email) {}
 }

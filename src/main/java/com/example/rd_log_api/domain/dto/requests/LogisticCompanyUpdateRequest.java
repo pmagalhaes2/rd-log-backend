@@ -37,5 +37,4 @@ public class LogisticCompanyUpdateRequest {
     @Email
     private String email;
 
-    private Boolean accepts_dangerous_loads;
 }

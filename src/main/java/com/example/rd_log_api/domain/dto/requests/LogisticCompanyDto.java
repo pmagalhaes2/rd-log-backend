@@ -28,7 +28,6 @@ public class LogisticCompanyDto {
 
     private String email;
 
-    private Boolean accepts_dangerous_loads;
 
-    public LogisticCompanyDto(String name, Time openingHours, Time closingHours, String phoneNumber, String email, Boolean acceptsDangerousLoads) {}
+    public LogisticCompanyDto(String name, Time openingHours, Time closingHours, String phoneNumber, String email) {}
 }
