@@ -33,19 +33,23 @@ Before you begin, you will need to have the following tools installed on your ma
 ## 📥  Installation  and usage
 
 ```bash  
-  # Clone this repository  
+  # Clone this repository
+  
 $ git clone https://github.com/pmagalhaes2/rd-log-api
 
 
 # Access the project folder in your terminal
+
 $ cd rd-log-api
 
 
 # Install dependencies with Maven
+
 $ mvn clean install
 
 
 # Run the application
+
 $ mvn spring-boot:run
 
 
@@ -212,4 +216,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
   ---
 
-Feito por [Patricia Magalhães](https://github.com/pmagalhaes2), [Cristina Giardini](https://github.com/cristina-giardini), [Thamires Barbosa](https://github.com/thamirescandidabarbosa), [Katherine Uchoas](https://github.com/katherineuchoas) e [Sophia Contesini](https://github.com/sophiacontesini) 💙
+Made by [Patricia Magalhães](https://github.com/pmagalhaes2), [Cristina Giardini](https://github.com/cristina-giardini), [Thamires Barbosa](https://github.com/thamirescandidabarbosa), [Katherine Uchoas](https://github.com/katherineuchoas) e [Sophia Contesini](https://github.com/sophiacontesini) 💙
