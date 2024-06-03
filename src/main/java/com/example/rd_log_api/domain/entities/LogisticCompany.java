@@ -1,11 +1,6 @@
 package com.example.rd_log_api.domain.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,5 +37,13 @@ public class LogisticCompany {
 
     private String password;
 
-    public LogisticCompany(Long id, String name, String cnpj, Time openingHours, Time closingHours, String phoneNumber, String email) {}
+    @OneToOne(orphanRemoval = true)
+    @JoinTable(name = "logistic_companies_address",
+            joinColumns = @JoinColumn(name = "logisticCompany_id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id"))
+    private Address address;
+
+    public LogisticCompany(Long id, String name, String cnpj, Time openingHours, Time closingHours, String phoneNumber, String email, String address) {}
+
+
 }
