@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.sql.Time;
 @Entity
@@ -26,6 +27,7 @@ public class Administrator {
 
     private String name;
 
+    @CPF
     @Column(unique = true)
     private String cpf;
 
