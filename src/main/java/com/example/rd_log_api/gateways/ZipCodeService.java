@@ -1,6 +1,6 @@
 package com.example.rd_log_api.gateways;
 
-import com.example.rd_log_api.service.ZipCodeResponse;
+import com.example.rd_log_api.domain.dto.responses.ZipCodeResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;

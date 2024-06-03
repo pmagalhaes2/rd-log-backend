@@ -1,7 +1,7 @@
 package com.example.rd_log_api.controllers;
 
 import com.example.rd_log_api.gateways.ZipCodeService;
-import com.example.rd_log_api.service.ZipCodeResponse;
+import com.example.rd_log_api.domain.dto.responses.ZipCodeResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -10,14 +10,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Time;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties
-public class LogisticCompanyCreationRequest {
+public class AdministratorCreationRequest {
     private Long id;
 
     @NotBlank
@@ -26,17 +24,7 @@ public class LogisticCompanyCreationRequest {
 
     @NotBlank
     @NotEmpty
-    private String cnpj;
-
-    @JsonFormat(pattern = "HH:mm:ss")
-    private Time opening_hours;
-
-    @JsonFormat(pattern = "HH:mm:ss")
-    private Time closing_hours;
-
-    @NotBlank
-    @NotEmpty
-    private String phone_number;
+    private String cpf;
 
     @NotBlank
     @NotEmpty
@@ -46,8 +34,4 @@ public class LogisticCompanyCreationRequest {
     @NotBlank
     @NotEmpty
     private String password;
-
-    public LogisticCompanyCreationRequest(Long id, String name, String cnpj, String phoneNumber, String email) {
-    }
 }
-

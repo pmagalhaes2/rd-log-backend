@@ -1,5 +1,4 @@
 package com.example.rd_log_api.domain.dto.requests;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Email;
@@ -17,37 +16,19 @@ import java.sql.Time;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties
-public class LogisticCompanyCreationRequest {
-    private Long id;
-
+public class AdministratorUpdateRequest {
     @NotBlank
     @NotEmpty
     private String name;
 
     @NotBlank
     @NotEmpty
-    private String cnpj;
-
-    @JsonFormat(pattern = "HH:mm:ss")
-    private Time opening_hours;
-
-    @JsonFormat(pattern = "HH:mm:ss")
-    private Time closing_hours;
-
-    @NotBlank
-    @NotEmpty
-    private String phone_number;
+    private String cpf;
 
     @NotBlank
     @NotEmpty
     @Email
     private String email;
 
-    @NotBlank
-    @NotEmpty
     private String password;
-
-    public LogisticCompanyCreationRequest(Long id, String name, String cnpj, String phoneNumber, String email) {
-    }
 }
-

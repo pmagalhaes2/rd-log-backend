@@ -6,7 +6,7 @@ import com.example.rd_log_api.domain.dto.requests.LogisticCompanyCreationRequest
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyDto;
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyUpdateRequest;
 import com.example.rd_log_api.domain.dto.responses.LogisticCompanyCreationResponse;
-import com.example.rd_log_api.service.LoginResponse;
+import com.example.rd_log_api.domain.dto.responses.LoginResponse;
 import com.example.rd_log_api.service.LogisticCompanyService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

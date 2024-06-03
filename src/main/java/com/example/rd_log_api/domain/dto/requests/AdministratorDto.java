@@ -1,5 +1,6 @@
 package com.example.rd_log_api.domain.dto.requests;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,22 +14,15 @@ import java.sql.Time;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties
-public class LogisticCompanyDto {
-    public String address;
+public class AdministratorDto {
     private Long id;
 
     private String name;
 
-    private String cnpj;
-
-    private Time opening_hours;
-
-    private Time closing_hours;
-
-    private String phone_number;
+    private String cpf;
 
     private String email;
 
 
-    public LogisticCompanyDto(Long id, String name, String cnpj, Time openingHours, Time closingHours, String phoneNumber, String email) {}
+    public AdministratorDto(String name, String cpf, String email) {}
 }
