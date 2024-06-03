@@ -54,6 +54,6 @@ public class LogisticCompanyCreationResponse {
         this.closing_hours = logisticCompany.getClosing_hours();
         this.phone_number = logisticCompany.getPhone_number();
         this.email = logisticCompany.getEmail();
-        this.accepts_dangerous_loads = logisticCompany.getAccepts_dangerous_loads();
+
     }
 }

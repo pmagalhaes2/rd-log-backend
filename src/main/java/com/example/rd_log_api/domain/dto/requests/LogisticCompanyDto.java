@@ -14,6 +14,7 @@ import java.sql.Time;
 @NoArgsConstructor
 @JsonIgnoreProperties
 public class LogisticCompanyDto {
+    public String address;
     private Long id;
 
     private String name;
@@ -29,5 +30,5 @@ public class LogisticCompanyDto {
     private String email;
 
 
-    public LogisticCompanyDto(String name, Time openingHours, Time closingHours, String phoneNumber, String email) {}
+    public LogisticCompanyDto(Long id, String name, String cnpj, Time openingHours, Time closingHours, String phoneNumber, String email) {}
 }

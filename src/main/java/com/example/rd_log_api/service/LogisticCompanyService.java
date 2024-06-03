@@ -49,10 +49,6 @@ public class LogisticCompanyService {
         existingLogisticCompany.setClosingHours(logisticCompany.getClosing_hours());
         existingLogisticCompany.setPhoneNumber(logisticCompany.getPhone_number());
         existingLogisticCompany.setEmail(logisticCompany.getEmail());
-        existingLogisticCompany.setAcceptsDangerousLoads(
-                logisticCompany.getAccepts_dangerous_loads() != null ?
-                        logisticCompany.getAccepts_dangerous_loads() :
-                        existingLogisticCompany.getAcceptsDangerousLoads());
         LogisticCompany updatedLogisticCompany = repository.save(existingLogisticCompany);
 
         return LogisticCompanyMapper.toLogisticDto(updatedLogisticCompany);
