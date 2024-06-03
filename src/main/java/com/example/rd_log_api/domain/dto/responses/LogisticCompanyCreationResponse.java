@@ -54,6 +54,5 @@ public class LogisticCompanyCreationResponse {
         this.closing_hours = logisticCompany.getClosing_hours();
         this.phone_number = logisticCompany.getPhone_number();
         this.email = logisticCompany.getEmail();
-
     }
 }
