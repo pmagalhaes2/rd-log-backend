@@ -1,7 +1,7 @@
 package com.example.rd_log_api.domain.entities;
 
 import jakarta.persistence.*;
-        import lombok.AllArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,4 +37,14 @@ public class Address {
 
     @OneToOne(mappedBy = "address")
     private LogisticCompany logisticCompany;
+
+    public Address(Long id, String type, String value, Integer number, String city, String state, String zipCode) {
+        this.id = id;
+        this.type = type;
+        this.value = value;
+        this.number = number;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+    }
 }

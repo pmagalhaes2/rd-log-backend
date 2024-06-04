@@ -44,8 +44,6 @@ public class LogisticCompanyCreationResponse {
     @Email
     private String email;
 
-    private Boolean accepts_dangerous_loads = Boolean.FALSE;
-
     public LogisticCompanyCreationResponse(LogisticCompanyCreationRequest logisticCompany) {
         this.id = logisticCompany.getId();
         this.name = logisticCompany.getName();
