@@ -1,4 +1,4 @@
-package com.example.rd_log_api.domain.dto.requests;
+package com.example.rd_log_api.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

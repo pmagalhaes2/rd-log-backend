@@ -2,10 +2,9 @@ package com.example.rd_log_api.service;
 
 import com.example.rd_log_api.domain.dto.LoginDto;
 import com.example.rd_log_api.domain.dto.requests.AdministratorCreationRequest;
-import com.example.rd_log_api.domain.dto.requests.AdministratorDto;
+import com.example.rd_log_api.domain.dto.AdministratorDto;
 import com.example.rd_log_api.domain.dto.requests.AdministratorUpdateRequest;
 import com.example.rd_log_api.domain.dto.responses.LoginAdminResponse;
-import com.example.rd_log_api.domain.dto.responses.LoginResponse;
 import com.example.rd_log_api.domain.entities.Administrator;
 import com.example.rd_log_api.domain.mappers.AdministratorMapper;
 import com.example.rd_log_api.repositories.AdministratorRepository;

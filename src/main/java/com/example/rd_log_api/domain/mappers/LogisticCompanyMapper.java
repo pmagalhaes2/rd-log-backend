@@ -1,7 +1,7 @@
 package com.example.rd_log_api.domain.mappers;
 
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyCreationRequest;
-import com.example.rd_log_api.domain.dto.requests.LogisticCompanyDto;
+import com.example.rd_log_api.domain.dto.LogisticCompanyDto;
 import com.example.rd_log_api.domain.entities.LogisticCompany;
 
 public class LogisticCompanyMapper {
@@ -18,7 +18,7 @@ public class LogisticCompanyMapper {
         );
     }
 
-    public static LogisticCompany toEntityFromLogisticDto(LogisticCompanyDto dto) {
+ /*   public static LogisticCompany toEntityFromLogisticDto(LogisticCompanyDto dto) {
         return new LogisticCompany(
                 dto.getId(),
                 dto.getName(),
@@ -28,7 +28,7 @@ public class LogisticCompanyMapper {
                 dto.getPhone_number(),
                 dto.getEmail()
         );
-    }
+    }*/
 
     public static LogisticCompanyCreationRequest toCreationRequestDto(LogisticCompany entity) {
         return new LogisticCompanyCreationRequest(

@@ -39,7 +39,7 @@ public class LogisticCompany {
 
     @OneToOne(orphanRemoval = true)
     @JoinTable(name = "logistic_companies_address",
-            joinColumns = @JoinColumn(name = "logisticCompany_id"),
+            //joinColumns = @JoinColumn(name = "logisticCompany_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id"))
     private Address address;
 

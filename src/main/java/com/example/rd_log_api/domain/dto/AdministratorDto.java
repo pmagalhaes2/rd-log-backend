@@ -1,4 +1,4 @@
-package com.example.rd_log_api.domain.dto.requests;
+package com.example.rd_log_api.domain.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.sql.Time;
 
 @Data
 @Builder
