@@ -37,13 +37,7 @@ public class LogisticCompany {
 
     private String password;
 
-    @OneToOne(orphanRemoval = true)
-    @JoinTable(name = "logistic_companies_address",
-            joinColumns = @JoinColumn(name = "logisticCompany_id"),
-            inverseJoinColumns = @JoinColumn(name = "address_id"))
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="address_id", referencedColumnName = "id")
     private Address address;
-
-    public LogisticCompany(Long id, String name, String cnpj, Time openingHours, Time closingHours, String phoneNumber, String email, String address) {}
-
-
 }
