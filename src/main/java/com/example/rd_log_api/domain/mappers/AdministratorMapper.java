@@ -1,5 +1,6 @@
 package com.example.rd_log_api.domain.mappers;
 
+import com.example.rd_log_api.domain.dto.AdministratorDto;
 import com.example.rd_log_api.domain.dto.requests.*;
 import com.example.rd_log_api.domain.entities.Administrator;
 
