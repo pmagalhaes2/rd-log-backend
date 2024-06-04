@@ -46,8 +46,8 @@ public class AdministratorService {
         Administrator existingAdministrator = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(AdministratorDto.class, String.valueOf(id)));
         existingAdministrator.setName(administratorUpdateRequest.getName());
-        existingAdministrator.setCpf(administratorUpdateRequest.getCpf());
         existingAdministrator.setEmail(administratorUpdateRequest.getEmail());
+        existingAdministrator.setPassword(administratorUpdateRequest.getPassword());
         if (administratorUpdateRequest.getPassword() != null) {
             existingAdministrator.setPassword(administratorUpdateRequest.getPassword());
         }

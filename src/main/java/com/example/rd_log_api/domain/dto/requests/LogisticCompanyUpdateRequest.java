@@ -43,4 +43,7 @@ public class LogisticCompanyUpdateRequest {
     @Schema(example = "updated_email@example.com", description = "Updated email of the logistic company")
     private String email;
 
+    @Schema(description = "The password for the logistic company.", example = "P@ssw0rd")
+    private String password;
+
 }

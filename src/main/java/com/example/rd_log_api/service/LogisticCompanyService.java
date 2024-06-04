@@ -50,6 +50,7 @@ public class LogisticCompanyService {
         existingLogisticCompany.setClosingHours(logisticCompany.getClosing_hours());
         existingLogisticCompany.setPhoneNumber(logisticCompany.getPhone_number());
         existingLogisticCompany.setEmail(logisticCompany.getEmail());
+        existingLogisticCompany.setPassword(logisticCompany.getPassword());
         LogisticCompany updatedLogisticCompany = repository.save(existingLogisticCompany);
 
         return LogisticCompanyMapper.toLogisticDto(updatedLogisticCompany);
