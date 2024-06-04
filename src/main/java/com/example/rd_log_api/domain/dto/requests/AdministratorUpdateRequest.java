@@ -25,11 +25,6 @@ public class AdministratorUpdateRequest {
 
     @NotBlank
     @NotEmpty
-    @Schema(description = "The CPF of the administrator.", example = "12345678900")
-    private String cpf;
-
-    @NotBlank
-    @NotEmpty
     @Email
     @Schema(description = "The email address of the administrator.", example = "john@example.com")
     private String email;
