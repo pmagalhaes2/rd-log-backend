@@ -3,7 +3,7 @@ package com.example.rd_log_api.controllers;
 import com.example.rd_log_api.domain.dto.LoginDto;
 import com.example.rd_log_api.domain.dto.exception.NotFoundException;
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyCreationRequest;
-import com.example.rd_log_api.domain.dto.requests.LogisticCompanyDto;
+import com.example.rd_log_api.domain.dto.LogisticCompanyDto;
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyUpdateRequest;
 import com.example.rd_log_api.domain.dto.responses.LogisticCompanyCreationResponse;
 import com.example.rd_log_api.domain.dto.responses.LoginResponse;

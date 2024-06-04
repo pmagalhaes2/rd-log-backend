@@ -1,5 +1,6 @@
 package com.example.rd_log_api.controllers;
 
+import com.example.rd_log_api.domain.dto.AdministratorDto;
 import com.example.rd_log_api.domain.dto.LoginDto;
 import com.example.rd_log_api.domain.dto.exception.NotFoundException;
 import com.example.rd_log_api.domain.dto.requests.*;
