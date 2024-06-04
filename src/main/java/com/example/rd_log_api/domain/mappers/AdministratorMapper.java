@@ -9,7 +9,6 @@ public class AdministratorMapper {
     return new Administrator(
             request.getId(),
             request.getName(),
-            request.getCpf(),
             request.getEmail(),
             request.getPassword()
     );
