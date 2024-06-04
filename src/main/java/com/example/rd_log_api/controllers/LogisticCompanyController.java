@@ -57,7 +57,7 @@ public class LogisticCompanyController {
     }
 
     @Operation(summary = "Update an existing logistic company", description = "Updates an existing logistic company.", tags = {"Logistic Companies"})
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Logistic company updated successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = LogisticCompanyDto.class))), @ApiResponse(responseCode = "404", description = "Logistic company not found", content = {})})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Logistic company updated successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = LogisticCompanyDto.class))), @ApiResponse(responseCode = "404", description = "Logistic company not found", content = @Content)})
     @PutMapping("/{id}")
     public ResponseEntity<LogisticCompanyDto> updateLogisticCompany(@RequestBody @Valid LogisticCompanyUpdateRequest logisticCompany, @PathVariable Long id) throws NotFoundException {
         LogisticCompanyDto updatedLogisticCompany = service.updateLogisticCompany(id, logisticCompany);
