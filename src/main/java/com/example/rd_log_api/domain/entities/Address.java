@@ -1,5 +1,6 @@
 package com.example.rd_log_api.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +37,7 @@ public class Address {
     private String zipCode;
 
     @OneToOne(mappedBy = "address")
+    @JsonManagedReference
     private LogisticCompany logisticCompany;
 
     public Address(Long id, String type, String value, Integer number, String city, String state, String zipCode) {

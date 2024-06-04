@@ -1,5 +1,7 @@
 package com.example.rd_log_api.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,5 +41,6 @@ public class LogisticCompany {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="address_id", referencedColumnName = "id")
+    @JsonBackReference
     private Address address;
 }
