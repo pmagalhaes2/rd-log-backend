@@ -1,8 +1,8 @@
 package com.example.rd_log_api.domain.mappers;
 
-import com.example.rd_log_api.domain.dto.requests.AddressDto;
+import com.example.rd_log_api.domain.dto.AddressDto;
+import com.example.rd_log_api.domain.dto.LogisticCompanyDto;
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyCreationRequest;
-import com.example.rd_log_api.domain.dto.requests.LogisticCompanyDto;
 import com.example.rd_log_api.domain.entities.Address;
 import com.example.rd_log_api.domain.entities.LogisticCompany;
 
