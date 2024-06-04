@@ -47,7 +47,5 @@ public class LogisticCompanyCreationRequest {
     @NotEmpty
     private String password;
 
-    public LogisticCompanyCreationRequest(Long id, String name, String cnpj, String phoneNumber, String email) {
-    }
+    private AddressDto address;
 }
-
