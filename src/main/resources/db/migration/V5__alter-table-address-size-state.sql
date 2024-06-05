@@ -1,0 +1,2 @@
+ALTER TABLE address
+ALTER COLUMN state TYPE CHAR(2);
