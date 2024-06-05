@@ -30,7 +30,7 @@ public class Address {
     @Column(nullable = false, length = 50)
     private String city;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 2)
     private String state;
 
     @Column(nullable = false, length = 8)

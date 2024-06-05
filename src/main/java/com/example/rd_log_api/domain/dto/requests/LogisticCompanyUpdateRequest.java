@@ -46,4 +46,6 @@ public class LogisticCompanyUpdateRequest {
     @Schema(description = "The password for the logistic company.", example = "P@ssw0rd")
     private String password;
 
+    private AddressUpdateRequest address;
+
 }

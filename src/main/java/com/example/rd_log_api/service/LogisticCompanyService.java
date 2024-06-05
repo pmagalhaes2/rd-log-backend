@@ -1,12 +1,15 @@
 package com.example.rd_log_api.service;
 
 import com.example.rd_log_api.domain.dto.LoginDto;
+import com.example.rd_log_api.domain.dto.requests.AddressUpdateRequest;
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyCreationRequest;
 import com.example.rd_log_api.domain.dto.LogisticCompanyDto;
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyUpdateRequest;
 import com.example.rd_log_api.domain.dto.responses.LoginResponse;
+import com.example.rd_log_api.domain.entities.Address;
 import com.example.rd_log_api.domain.entities.LogisticCompany;
 import com.example.rd_log_api.domain.mappers.LogisticCompanyMapper;
+import com.example.rd_log_api.repositories.AddressRepository;
 import com.example.rd_log_api.repositories.LogisticCompanyRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +23,12 @@ import java.util.List;
 public class LogisticCompanyService {
 
     private final LogisticCompanyRepository repository;
+    private final AddressRepository addressRepository;
 
     @Autowired
-    public LogisticCompanyService(LogisticCompanyRepository repository) {
+    public LogisticCompanyService(LogisticCompanyRepository repository, AddressRepository addressRepository) {
         this.repository = repository;
+        this.addressRepository = addressRepository;
     }
 
     public List<LogisticCompanyDto> getAll() {
@@ -45,15 +50,39 @@ public class LogisticCompanyService {
     public LogisticCompanyDto updateLogisticCompany(Long id, LogisticCompanyUpdateRequest logisticCompany) throws NotFoundException {
         LogisticCompany existingLogisticCompany = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(LogisticCompanyDto.class, String.valueOf(id)));
-        existingLogisticCompany.setName(logisticCompany.getName());
-        existingLogisticCompany.setOpeningHours(logisticCompany.getOpening_hours());
-        existingLogisticCompany.setClosingHours(logisticCompany.getClosing_hours());
-        existingLogisticCompany.setPhoneNumber(logisticCompany.getPhone_number());
-        existingLogisticCompany.setEmail(logisticCompany.getEmail());
-        existingLogisticCompany.setPassword(logisticCompany.getPassword());
+
+        updateLogisticCompanyFields(existingLogisticCompany, logisticCompany);
+
+        Address existingAddress = getAddressFromLogisticCompany(existingLogisticCompany);
+        AddressUpdateRequest addressRequest = logisticCompany.getAddress();
+        updateAddressFields(existingAddress, addressRequest);
+        addressRepository.save(existingAddress);
+
         LogisticCompany updatedLogisticCompany = repository.save(existingLogisticCompany);
 
         return LogisticCompanyMapper.toLogisticDto(updatedLogisticCompany);
+    }
+
+    private void updateLogisticCompanyFields(LogisticCompany logisticCompany, LogisticCompanyUpdateRequest updateRequest) {
+        logisticCompany.setName(updateRequest.getName());
+        logisticCompany.setOpeningHours(updateRequest.getOpening_hours());
+        logisticCompany.setClosingHours(updateRequest.getClosing_hours());
+        logisticCompany.setPhoneNumber(updateRequest.getPhone_number());
+        logisticCompany.setEmail(updateRequest.getEmail());
+        logisticCompany.setPassword(updateRequest.getPassword());
+    }
+
+    private Address getAddressFromLogisticCompany(LogisticCompany logisticCompany) {
+        return logisticCompany.getAddress();
+    }
+
+    private void updateAddressFields(Address address, AddressUpdateRequest updateRequest) {
+        address.setType(updateRequest.getType());
+        address.setValue(updateRequest.getValue());
+        address.setNumber(updateRequest.getNumber());
+        address.setCity(updateRequest.getCity());
+        address.setState(updateRequest.getState());
+        address.setZipCode(updateRequest.getZipCode());
     }
 
     @Transactional
