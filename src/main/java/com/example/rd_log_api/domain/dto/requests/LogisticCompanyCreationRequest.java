@@ -58,4 +58,7 @@ public class LogisticCompanyCreationRequest {
 
     @Schema(description = "Address of the logistic company")
     private AddressDto address;
+
+    @Schema(description = "Price of kilometer road of the logistic company")
+    private Double price_km;
 }

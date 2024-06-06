@@ -48,4 +48,8 @@ public class LogisticCompanyUpdateRequest {
 
     private AddressUpdateRequest address;
 
+    @Schema(description = "Price of kilometer road of the logistic company")
+    private Double price_km;
+
 }
+

@@ -21,6 +21,9 @@ public class LogisticCompanyDto {
     @Schema(example = "12345678901234", description = "CNPJ of the logistic company")
     private String cnpj;
 
+    @Schema(example = "2,99", description = "Price of kilometer road of the logistic company")
+    private Double price_km;
+
     @Schema(example = "08:00:00", description = "Opening hours of the logistic company")
     private Time opening_hours;
 

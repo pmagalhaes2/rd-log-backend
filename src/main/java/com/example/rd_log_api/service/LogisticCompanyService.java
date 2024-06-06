@@ -73,6 +73,7 @@ public class LogisticCompanyService {
         logisticCompany.setClosingHours(updateRequest.getClosing_hours());
         logisticCompany.setPhoneNumber(updateRequest.getPhone_number());
         logisticCompany.setEmail(updateRequest.getEmail());
+        logisticCompany.setPriceKm(updateRequest.getPrice_km());
         logisticCompany.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
     }
 

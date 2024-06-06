@@ -24,6 +24,7 @@ public class LogisticCompanyMapper {
                 request.getId(),
                 request.getName(),
                 request.getCnpj(),
+                request.getPrice_km(),
                 request.getOpening_hours(),
                 request.getClosing_hours(),
                 request.getPhone_number(),
@@ -54,8 +55,9 @@ public class LogisticCompanyMapper {
                 entity.getPhoneNumber(),
                 entity.getEmail(),
                 entity.getPassword(),
-                addressDto
-        );
+                addressDto,
+                entity.getPriceKm()
+                );
     }
 
     public static LogisticCompanyDto toLogisticDto(LogisticCompany entity) {
@@ -74,6 +76,7 @@ public class LogisticCompanyMapper {
                 entity.getId(),
                 entity.getName(),
                 entity.getCnpj(),
+                entity.getPriceKm(),
                 entity.getOpeningHours(),
                 entity.getClosingHours(),
                 entity.getPhoneNumber(),

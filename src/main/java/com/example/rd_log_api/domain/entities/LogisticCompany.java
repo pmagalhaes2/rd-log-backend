@@ -1,7 +1,6 @@
 package com.example.rd_log_api.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +23,9 @@ public class LogisticCompany {
 
     @Column(unique = true)
     private String cnpj;
+
+    @Column(name="price_km")
+    private Double priceKm;
 
     @Column(name="opening_hours")
     private Time openingHours;
