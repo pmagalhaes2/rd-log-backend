@@ -10,6 +10,7 @@ import com.example.rd_log_api.domain.mappers.AdministratorMapper;
 import com.example.rd_log_api.repositories.AdministratorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.rd_log_api.domain.dto.exception.NotFoundException;
@@ -18,6 +19,8 @@ import java.util.List;
 
 @Service
 public class AdministratorService {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private final AdministratorRepository repository;
 
     @Autowired
@@ -36,6 +39,7 @@ public class AdministratorService {
 
     public AdministratorDto createAdministrator(AdministratorCreationRequest administrator) {
         Administrator newAdministrator = AdministratorMapper.toEntityFromCreationRequest(administrator);
+        newAdministrator.setPassword(passwordEncoder.encode(administrator.getPassword()));
         Administrator savedAdministrator = repository.save(newAdministrator);
         return AdministratorMapper.toAdministratorDto(savedAdministrator);
     }
@@ -47,10 +51,7 @@ public class AdministratorService {
                 .orElseThrow(() -> new NotFoundException(AdministratorDto.class, String.valueOf(id)));
         existingAdministrator.setName(administratorUpdateRequest.getName());
         existingAdministrator.setEmail(administratorUpdateRequest.getEmail());
-        existingAdministrator.setPassword(administratorUpdateRequest.getPassword());
-        if (administratorUpdateRequest.getPassword() != null) {
-            existingAdministrator.setPassword(administratorUpdateRequest.getPassword());
-        }
+        existingAdministrator.setPassword(passwordEncoder.encode(administratorUpdateRequest.getPassword()));
         Administrator updatedAdministrator = repository.save(existingAdministrator);
 
         return AdministratorMapper.toAdministratorDto(updatedAdministrator);
@@ -67,7 +68,7 @@ public class AdministratorService {
 
     public LoginAdminResponse login(LoginDto loginDto) {
         Administrator administrator = repository.findByEmail(loginDto.getEmail());
-        if (administrator != null && administrator.getPassword() != null && administrator.getPassword().equals(loginDto.getPassword())) {
+        if (administrator != null && administrator.getPassword() != null && passwordEncoder.matches(loginDto.getPassword(), administrator.getPassword())) {
             return new LoginAdminResponse("Login realizado com sucesso.", administrator.getId(), administrator.getName());
         } else {
             throw new RuntimeException("Dados inválidos, tente novamente.");

@@ -13,6 +13,7 @@ import com.example.rd_log_api.repositories.AddressRepository;
 import com.example.rd_log_api.repositories.LogisticCompanyRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.rd_log_api.domain.dto.exception.NotFoundException;
@@ -21,6 +22,8 @@ import java.util.List;
 
 @Service
 public class LogisticCompanyService {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private final LogisticCompanyRepository repository;
     private final AddressRepository addressRepository;
@@ -42,6 +45,7 @@ public class LogisticCompanyService {
 
     public LogisticCompanyCreationRequest createLogisticCompany(LogisticCompanyCreationRequest logisticCompany) {
         LogisticCompany newLogisticCompany = LogisticCompanyMapper.toEntityFromCreationRequest(logisticCompany);
+        newLogisticCompany.setPassword(passwordEncoder.encode(newLogisticCompany.getPassword()));
         repository.save(newLogisticCompany);
         return LogisticCompanyMapper.toCreationRequestDto(newLogisticCompany);
     }
@@ -69,7 +73,7 @@ public class LogisticCompanyService {
         logisticCompany.setClosingHours(updateRequest.getClosing_hours());
         logisticCompany.setPhoneNumber(updateRequest.getPhone_number());
         logisticCompany.setEmail(updateRequest.getEmail());
-        logisticCompany.setPassword(updateRequest.getPassword());
+        logisticCompany.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
     }
 
     private Address getAddressFromLogisticCompany(LogisticCompany logisticCompany) {
@@ -96,7 +100,7 @@ public class LogisticCompanyService {
 
     public LoginResponse login(LoginDto loginDto) {
         LogisticCompany logisticCompany = repository.findByEmail(loginDto.getEmail());
-        if (logisticCompany != null && logisticCompany.getPassword() != null && logisticCompany.getPassword().equals(loginDto.getPassword())) {
+        if (logisticCompany != null && logisticCompany.getPassword() != null && passwordEncoder.matches(loginDto.getPassword(), logisticCompany.getPassword())) {
             return new LoginResponse("Login realizado com sucesso.", logisticCompany.getId(), logisticCompany.getName());
         } else {
             throw new RuntimeException("Dados inválidos, tente novamente.");
