@@ -9,7 +9,7 @@ public class AddressMapper {
     public static Address toEntityFromCreationRequest(AddressCreationRequest request) {
         return new Address(
                 request.getId(),
-                request.getType(),
+                request.getComplement(),
                 request.getValue(),
                 request.getNumber(),
                 request.getCity(),
@@ -21,36 +21,37 @@ public class AddressMapper {
     public static Address toEntityFromAddressDto(AddressDto dto) {
         return new Address(
                 dto.getId(),
-                dto.getType(),
+                dto.getComplement(),
                 dto.getValue(),
                 dto.getNumber(),
                 dto.getCity(),
                 dto.getState(),
                 dto.getZipCode()
+
         );
     }
 
     public static AddressCreationRequest toCreationRequestDto(Address entity) {
         return new AddressCreationRequest(
                 entity.getId(),
-                entity.getType(),
                 entity.getValue(),
                 entity.getNumber(),
                 entity.getCity(),
                 entity.getState(),
-                entity.getZipCode()
+                entity.getZipCode(),
+                entity.getComplement()
         );
     }
 
     public static AddressDto toAddressDto(Address entity) {
         return new AddressDto(
                 entity.getId(),
-                entity.getType(),
                 entity.getValue(),
                 entity.getNumber(),
                 entity.getCity(),
                 entity.getState(),
-                entity.getZipCode()
+                entity.getZipCode(),
+                entity.getComplement()
 
         );
     }

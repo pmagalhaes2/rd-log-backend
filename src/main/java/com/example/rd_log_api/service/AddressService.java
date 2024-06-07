@@ -30,12 +30,12 @@ public class AddressService {
         Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Address not found"));
 
-        address.setType(addressDetails.getType());
         address.setValue(addressDetails.getValue());
         address.setNumber(addressDetails.getNumber());
         address.setCity(addressDetails.getCity());
         address.setState(addressDetails.getState());
         address.setZipCode(addressDetails.getZipCode());
+        address.setComplement(addressDetails.getComplement());
         return addressRepository.save(address);
     }
 

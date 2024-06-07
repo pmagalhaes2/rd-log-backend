@@ -18,9 +18,6 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 50)
-    private String type;
-
     @Column(nullable = false)
     private String value;
 
@@ -40,9 +37,12 @@ public class Address {
     @JsonManagedReference
     private LogisticCompany logisticCompany;
 
-    public Address(Long id, String type, String value, Integer number, String city, String state, String zipCode) {
+    @Column(nullable = false, length = 50)
+    private String complement;
+
+    public Address(Long id, String complement, String value, Integer number, String city, String state, String zipCode) {
         this.id = id;
-        this.type = type;
+        this.complement = complement;
         this.value = value;
         this.number = number;
         this.city = city;

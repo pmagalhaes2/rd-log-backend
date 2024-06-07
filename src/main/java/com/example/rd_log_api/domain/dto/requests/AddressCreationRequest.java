@@ -18,10 +18,6 @@ public class AddressCreationRequest {
 
     @NotBlank
     @NotEmpty
-    private String type;
-
-    @NotBlank
-    @NotEmpty
     private String value;
 
     @NotBlank
@@ -39,5 +35,8 @@ public class AddressCreationRequest {
     @NotBlank
     @NotEmpty
     private String zipCode;
+
+    @NotBlank
+    private String complement;
 
 }

@@ -15,9 +15,6 @@ import lombok.NoArgsConstructor;
 public class AddressDto {
     private Long id;
 
-    @Schema(example = "Travessa", description = "Type of the address")
-    private String type;
-
     @Schema(example = "Travessa da Conquista", description = "Value of the address")
     private String value;
 
@@ -35,4 +32,7 @@ public class AddressDto {
 
     @Schema(example = "09700000", description = "Zip code of the address")
     private String zipCode;
+
+    @Schema(example = "Apartamento 01", description = "Complement of the address")
+    private String complement;
 }

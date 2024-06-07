@@ -82,12 +82,12 @@ public class LogisticCompanyService {
     }
 
     private void updateAddressFields(Address address, AddressUpdateRequest updateRequest) {
-        address.setType(updateRequest.getType());
         address.setValue(updateRequest.getValue());
         address.setNumber(updateRequest.getNumber());
         address.setCity(updateRequest.getCity());
         address.setState(updateRequest.getState());
         address.setZipCode(updateRequest.getZipCode());
+        address.setComplement(updateRequest.getComplement());
     }
 
     @Transactional

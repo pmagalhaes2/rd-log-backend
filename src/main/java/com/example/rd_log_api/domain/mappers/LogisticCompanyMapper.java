@@ -12,7 +12,7 @@ public class LogisticCompanyMapper {
         AddressDto addressDto = request.getAddress();
         Address address = new Address(
                 addressDto.getId(),
-                addressDto.getType(),
+                addressDto.getComplement(),
                 addressDto.getValue(),
                 addressDto.getNumber(),
                 addressDto.getCity(),
@@ -38,12 +38,12 @@ public class LogisticCompanyMapper {
         Address address = entity.getAddress();
         AddressDto addressDto = new AddressDto(
                 address.getId(),
-                address.getType(),
                 address.getValue(),
                 address.getNumber(),
                 address.getCity(),
                 address.getState(),
-                address.getZipCode()
+                address.getZipCode(),
+                address.getComplement()
         );
 
         return new LogisticCompanyCreationRequest(
@@ -64,12 +64,12 @@ public class LogisticCompanyMapper {
         Address address = entity.getAddress();
         AddressDto addressDto = new AddressDto(
                 address.getId(),
-                address.getType(),
                 address.getValue(),
                 address.getNumber(),
                 address.getCity(),
                 address.getState(),
-                address.getZipCode()
+                address.getZipCode(),
+                address.getComplement()
         );
 
         return new LogisticCompanyDto(
