@@ -9,29 +9,39 @@ import com.example.rd_log_api.domain.dto.responses.LoginResponse;
 import com.example.rd_log_api.domain.entities.Address;
 import com.example.rd_log_api.domain.entities.LogisticCompany;
 import com.example.rd_log_api.domain.mappers.LogisticCompanyMapper;
+import com.example.rd_log_api.gateways.DistanceMatrixService;
+import com.example.rd_log_api.gateways.ZipCodeService;
 import com.example.rd_log_api.repositories.AddressRepository;
 import com.example.rd_log_api.repositories.LogisticCompanyRepository;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.rd_log_api.domain.dto.exception.NotFoundException;
-
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 public class LogisticCompanyService {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
+    private PasswordEncoder passwordEncoder;
     private final LogisticCompanyRepository repository;
     private final AddressRepository addressRepository;
+    private final ZipCodeService zipCodeService;
+    private final DistanceMatrixService distanceMatrixService;
+
 
     @Autowired
-    public LogisticCompanyService(LogisticCompanyRepository repository, AddressRepository addressRepository) {
+    public LogisticCompanyService(LogisticCompanyRepository repository, AddressRepository addressRepository, ZipCodeService zipCodeService, DistanceMatrixService distanceMatrixService) {
         this.repository = repository;
         this.addressRepository = addressRepository;
+        this.zipCodeService = zipCodeService;
+        this.distanceMatrixService = distanceMatrixService;
     }
 
     public List<LogisticCompanyDto> getAll() {
@@ -106,5 +116,24 @@ public class LogisticCompanyService {
         } else {
             throw new RuntimeException("Dados inválidos, tente novamente.");
         }
+    }
+
+    public List<LogisticCompanyDto> findCompaniesInSameState(String originState, String destinationState) {
+        List<LogisticCompany> companiesInOriginState = repository.findByAddressState(originState);
+        List<LogisticCompany> companiesInDestinationState = repository.findByAddressState(destinationState);
+
+       companiesInOriginState.retainAll(companiesInDestinationState);
+
+        return companiesInOriginState.stream()
+                .map(LogisticCompanyMapper::toLogisticDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<LogisticCompanyDto> findNearestCompanies(double distanceInKilometers, String originState, String destinationState) {
+        List<LogisticCompany> companies = repository.findByAddressState(originState);
+
+        return companies.stream()
+                .map(LogisticCompanyMapper::toLogisticDto)
+                .collect(Collectors.toList());
     }
 }
