@@ -13,9 +13,6 @@ import com.example.rd_log_api.gateways.DistanceMatrixService;
 import com.example.rd_log_api.gateways.ZipCodeService;
 import com.example.rd_log_api.repositories.AddressRepository;
 import com.example.rd_log_api.repositories.LogisticCompanyRepository;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,19 +26,22 @@ import java.util.stream.Collectors;
 @Service
 public class LogisticCompanyService {
 
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
     private final LogisticCompanyRepository repository;
     private final AddressRepository addressRepository;
     private final ZipCodeService zipCodeService;
     private final DistanceMatrixService distanceMatrixService;
-
+    private final DistanceExtractorService distanceExtractorService;
 
     @Autowired
-    public LogisticCompanyService(LogisticCompanyRepository repository, AddressRepository addressRepository, ZipCodeService zipCodeService, DistanceMatrixService distanceMatrixService) {
+    public LogisticCompanyService(LogisticCompanyRepository repository, AddressRepository addressRepository, ZipCodeService zipCodeService, DistanceMatrixService distanceMatrixService, DistanceExtractorService distanceExtractorService) {
         this.repository = repository;
         this.addressRepository = addressRepository;
         this.zipCodeService = zipCodeService;
         this.distanceMatrixService = distanceMatrixService;
+        this.distanceExtractorService = distanceExtractorService;
     }
 
     public List<LogisticCompanyDto> getAll() {
@@ -122,18 +122,32 @@ public class LogisticCompanyService {
         List<LogisticCompany> companiesInOriginState = repository.findByAddressState(originState);
         List<LogisticCompany> companiesInDestinationState = repository.findByAddressState(destinationState);
 
-       companiesInOriginState.retainAll(companiesInDestinationState);
+        companiesInOriginState.retainAll(companiesInDestinationState);
 
         return companiesInOriginState.stream()
                 .map(LogisticCompanyMapper::toLogisticDto)
                 .collect(Collectors.toList());
     }
 
-    public List<LogisticCompanyDto> findNearestCompanies(double distanceInKilometers, String originState, String destinationState) {
-        List<LogisticCompany> companies = repository.findByAddressState(originState);
-
-        return companies.stream()
+    public List<LogisticCompanyDto> findNearestCompanies(String origin, String destination, String key) {
+        List<LogisticCompanyDto> companies = repository.findByAddressState(destination).stream()
                 .map(LogisticCompanyMapper::toLogisticDto)
                 .collect(Collectors.toList());
+
+        return companies.stream()
+                .sorted((c1, c2) -> {
+                    String zipCode1 = c1.getAddress().getZipCode();
+                    String zipCode2 = c2.getAddress().getZipCode();
+
+                    String response1 = distanceMatrixService.getDistance(origin, zipCode1, key);
+                    String response2 = distanceMatrixService.getDistance(origin, zipCode2, key);
+
+                    int distance1 = distanceExtractorService.extractDistanceFromResponse(response1);
+                    int distance2 = distanceExtractorService.extractDistanceFromResponse(response2);
+
+                    return Integer.compare(distance1, distance2);
+                })
+                .collect(Collectors.toList());
     }
+
 }
