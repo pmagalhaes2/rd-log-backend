@@ -25,11 +25,4 @@ public class DistanceController {
     public String getDistance(String origins, String destinations, String key) {
         return distanceMatrixService.getDistance(origins, destinations, key);
     }
-
-    @GetMapping("/nearest")
-    public ResponseEntity<List<LogisticCompanyDto>> findNearestCompanies(@RequestParam String originState, @RequestParam String destinationState) {
-        List<LogisticCompanyDto> nearestCompanies = logisticCompanyService.findCompaniesInSameState(originState, destinationState);
-
-        return ResponseEntity.ok(nearestCompanies);
-    }
 }

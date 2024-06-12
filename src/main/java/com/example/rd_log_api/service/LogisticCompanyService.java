@@ -1,9 +1,10 @@
 package com.example.rd_log_api.service;
 
 import com.example.rd_log_api.domain.dto.LoginDto;
+import com.example.rd_log_api.domain.dto.LogisticCompanyDto;
+import com.example.rd_log_api.domain.dto.exception.NotFoundException;
 import com.example.rd_log_api.domain.dto.requests.AddressUpdateRequest;
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyCreationRequest;
-import com.example.rd_log_api.domain.dto.LogisticCompanyDto;
 import com.example.rd_log_api.domain.dto.requests.LogisticCompanyUpdateRequest;
 import com.example.rd_log_api.domain.dto.responses.LoginResponse;
 import com.example.rd_log_api.domain.entities.Address;
@@ -18,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.rd_log_api.domain.dto.exception.NotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,15 +33,13 @@ public class LogisticCompanyService {
     private final AddressRepository addressRepository;
     private final ZipCodeService zipCodeService;
     private final DistanceMatrixService distanceMatrixService;
-    private final DistanceExtractorService distanceExtractorService;
 
     @Autowired
-    public LogisticCompanyService(LogisticCompanyRepository repository, AddressRepository addressRepository, ZipCodeService zipCodeService, DistanceMatrixService distanceMatrixService, DistanceExtractorService distanceExtractorService) {
+    public LogisticCompanyService(LogisticCompanyRepository repository, AddressRepository addressRepository, ZipCodeService zipCodeService, DistanceMatrixService distanceMatrixService) {
         this.repository = repository;
         this.addressRepository = addressRepository;
         this.zipCodeService = zipCodeService;
         this.distanceMatrixService = distanceMatrixService;
-        this.distanceExtractorService = distanceExtractorService;
     }
 
     public List<LogisticCompanyDto> getAll() {
@@ -118,35 +116,11 @@ public class LogisticCompanyService {
         }
     }
 
-    public List<LogisticCompanyDto> findCompaniesInSameState(String originState, String destinationState) {
+    public List<LogisticCompanyDto> findCompaniesInSameState(String originState) {
         List<LogisticCompany> companiesInOriginState = repository.findByAddressState(originState);
-        List<LogisticCompany> companiesInDestinationState = repository.findByAddressState(destinationState);
-
-        companiesInOriginState.retainAll(companiesInDestinationState);
 
         return companiesInOriginState.stream()
                 .map(LogisticCompanyMapper::toLogisticDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<LogisticCompanyDto> findNearestCompanies(String origin, String destination, String key) {
-        List<LogisticCompanyDto> companies = repository.findByAddressState(destination).stream()
-                .map(LogisticCompanyMapper::toLogisticDto)
-                .collect(Collectors.toList());
-
-        return companies.stream()
-                .sorted((c1, c2) -> {
-                    String zipCode1 = c1.getAddress().getZipCode();
-                    String zipCode2 = c2.getAddress().getZipCode();
-
-                    String response1 = distanceMatrixService.getDistance(origin, zipCode1, key);
-                    String response2 = distanceMatrixService.getDistance(origin, zipCode2, key);
-
-                    int distance1 = distanceExtractorService.extractDistanceFromResponse(response1);
-                    int distance2 = distanceExtractorService.extractDistanceFromResponse(response2);
-
-                    return Integer.compare(distance1, distance2);
-                })
                 .collect(Collectors.toList());
     }
 
