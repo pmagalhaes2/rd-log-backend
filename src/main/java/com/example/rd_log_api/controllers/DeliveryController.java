@@ -87,13 +87,13 @@ public class DeliveryController {
                 if (totalDistance < shortestDistance) {
                     shortestDistance = totalDistance;
                     closestCompany = new LogisticCompanyDistanceDto(company.getId(), company.getName(),
-                            String.valueOf(totalDistance), totalDurationFormatted, totalPrice);
+                            String.valueOf(totalDistance), totalDurationFormatted, totalPrice, true);
                 }
 
                 if (totalPrice < lowestPrice) {
                     lowestPrice = totalPrice;
                     cheapestCompany = new LogisticCompanyDistanceDto(company.getId(), company.getName(),
-                            String.valueOf(totalDistance), totalDurationFormatted, totalPrice);
+                            String.valueOf(totalDistance), totalDurationFormatted, totalPrice, false);
                 }
             }
         }

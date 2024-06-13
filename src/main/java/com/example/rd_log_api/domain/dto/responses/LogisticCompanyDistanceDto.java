@@ -13,4 +13,5 @@ public class LogisticCompanyDistanceDto {
     private String distance;
     private String duration;
     private Double price_km;
+    private boolean closest_company;
 }
