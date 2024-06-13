@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -41,61 +39,75 @@ public class DeliveryController {
 
         boolean sameState = verifyState(originInfo, destinationInfo);
 
-        if (sameState) {
-            String distanceResponse = distanceMatrixService.getDistance(originCep, destinationCep, apiKey);
-
-            String distanceSupplierStore = extractDistanceText(distanceResponse);
-            String durationSupplierStore = extractDurationText(distanceResponse);
-
-            List<LogisticCompanyDto> companiesInOriginState = logisticCompanyService.findCompaniesInSameState(originInfo.getUf());
-
-            LogisticCompanyDistanceDto closestCompany = null;
-            double shortestDistance = Double.MAX_VALUE;
-
-            LogisticCompanyDistanceDto cheapestCompany = null;
-            double lowestPrice = Double.MAX_VALUE;
-
-            for (LogisticCompanyDto company : companiesInOriginState) {
-                String distanceSupplierLogisticCompany = distanceMatrixService.getDistance(originInfo.getCep(), company.getAddress().getZipCode(), apiKey);
-                String distanceText = extractDistanceText(distanceSupplierLogisticCompany);
-
-                if (distanceText != null && distanceSupplierStore != null) {
-                    double distanceSupplierStoreValue = Double.parseDouble(distanceSupplierStore.replace(" km", ""));
-                    double distanceTextValue = Double.parseDouble(distanceText.replace(" km", ""));
-                    String durationText = extractDurationText(distanceSupplierLogisticCompany);
-
-                    double durationSupplierStoreValue = convertDurationToSeconds(durationSupplierStore);
-                    double durationTextValue = convertDurationToSeconds(durationText);
-                    double totalDuration = durationSupplierStoreValue + durationTextValue;
-                    String totalDurationFormatted = formatDuration(totalDuration);
-
-                    double totalDistance = distanceSupplierStoreValue + distanceTextValue;
-                    double totalPrice = totalDistance * company.getPrice_km();
-
-                    if (totalDistance < shortestDistance) {
-                        shortestDistance = totalDistance;
-                        closestCompany = new LogisticCompanyDistanceDto(company.getId(), company.getName(), String.valueOf(totalDistance), totalDurationFormatted, totalPrice);
-                    }
-
-                    if (totalPrice < lowestPrice) {
-                        lowestPrice = totalPrice;
-                        cheapestCompany = new LogisticCompanyDistanceDto(company.getId(), company.getName(), String.valueOf(totalDistance), totalDurationFormatted, totalPrice);
-                    }
-                }
-            }
-
-            List<LogisticCompanyDistanceDto> results = new ArrayList<>();
-            if (closestCompany != null) {
-                results.add(closestCompany);
-            }
-            if (cheapestCompany != null && !cheapestCompany.equals(closestCompany)) {
-                results.add(cheapestCompany);
-            }
-
-            return ResponseEntity.ok(results);
+        if (!sameState) {
+            throw new EntityNotFoundException("Endereços informados não estão dentro do mesmo estado.");
         }
 
-        return ResponseEntity.badRequest().build();
+        String distanceResponse = distanceMatrixService.getDistance(originCep, destinationCep, apiKey);
+
+        String distanceSupplierStore = extractDistanceText(distanceResponse);
+        String durationSupplierStore = extractDurationText(distanceResponse);
+
+        List<LogisticCompanyDto> companiesInOriginState = logisticCompanyService.findCompaniesInSameState(
+                originInfo.getUf());
+
+        if (distanceSupplierStore == null || durationSupplierStore == null) {
+            throw new NotFoundException(String.class, "Informação de distância ou duração não encontrada.");
+        }
+
+        LogisticCompanyDistanceDto closestCompany = null;
+        double shortestDistance = Double.MAX_VALUE;
+
+        LogisticCompanyDistanceDto cheapestCompany = null;
+        double lowestPrice = Double.MAX_VALUE;
+
+        if (companiesInOriginState.isEmpty()) {
+            throw new EntityNotFoundException(
+                    "Não foram encontradas transportadoras disponíveis para o estado " + "informado.");
+        }
+
+        for (LogisticCompanyDto company : companiesInOriginState) {
+            String distanceSupplierLogisticCompany = distanceMatrixService.getDistance(originInfo.getCep(),
+                    company.getAddress().getZipCode(), apiKey);
+            String distanceText = extractDistanceText(distanceSupplierLogisticCompany);
+
+            if (distanceText != null) {
+                double distanceSupplierStoreValue = Double.parseDouble(distanceSupplierStore.replace(" km", ""));
+                double distanceTextValue = Double.parseDouble(distanceText.replace(" km", ""));
+                String durationText = extractDurationText(distanceSupplierLogisticCompany);
+
+                double durationSupplierStoreValue = convertDurationToSeconds(durationSupplierStore);
+                double durationTextValue = convertDurationToSeconds(durationText);
+                double totalDuration = durationSupplierStoreValue + durationTextValue;
+                String totalDurationFormatted = formatDuration(totalDuration);
+
+                double totalDistance = distanceSupplierStoreValue + distanceTextValue;
+                double totalPrice = totalDistance * company.getPrice_km();
+
+                if (totalDistance < shortestDistance) {
+                    shortestDistance = totalDistance;
+                    closestCompany = new LogisticCompanyDistanceDto(company.getId(), company.getName(),
+                            String.valueOf(totalDistance), totalDurationFormatted, totalPrice);
+                }
+
+                if (totalPrice < lowestPrice) {
+                    lowestPrice = totalPrice;
+                    cheapestCompany = new LogisticCompanyDistanceDto(company.getId(), company.getName(),
+                            String.valueOf(totalDistance), totalDurationFormatted, totalPrice);
+                }
+            }
+        }
+
+        List<LogisticCompanyDistanceDto> results = new ArrayList<>();
+        if (closestCompany != null) {
+            results.add(closestCompany);
+        }
+        if (cheapestCompany != null && !cheapestCompany.equals(closestCompany)) {
+            results.add(cheapestCompany);
+        }
+
+        return ResponseEntity.ok(results);
+
     }
 
     private String extractDistanceText(String distanceResponse) {
