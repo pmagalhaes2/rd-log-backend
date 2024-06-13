@@ -53,16 +53,22 @@ public class DeliveryController {
             ArrayList<LogisticCompanyDistanceDto> logisticCompaniesDistance = new ArrayList<>();
 
             for (LogisticCompanyDto company : companiesInOriginState) {
-                String distanceSupplierLogisticCompany = distanceMatrixService.getDistance(originInfo.getCep(), company.getAddress().getZipCode(), "AIzaSyDaCsgY2-vPq2YjFx9CYEdH2aooGDlAMI0");
+                String distanceSupplierLogisticCompany = distanceMatrixService.getDistance(originInfo.getCep(), company.getAddress().getZipCode(), apiKey);
                 String distanceText = extractDistanceText(distanceSupplierLogisticCompany);
                 if (distanceText != null && distanceSupplierStore != null) {
                     double distanceSupplierStoreValue = Double.parseDouble(distanceSupplierStore.replace(" km", ""));
                     double distanceTextValue = Double.parseDouble(distanceText.replace(" km", ""));
+                    String durationText = extractDurationText(distanceSupplierLogisticCompany);
+
+                    double durationSupplierStoreValue = convertDurationToSeconds(durationSupplierStore);
+                    double durationTextValue = convertDurationToSeconds(durationText);
+                    double totalDuration = durationSupplierStoreValue + durationTextValue;
+                    String totalDurationFormatted = formatDuration(totalDuration);
 
                     double totalDistance = distanceSupplierStoreValue + distanceTextValue;
                     double totalPrice = totalDistance * company.getPrice_km();
 
-                    logisticCompaniesDistance.add(new LogisticCompanyDistanceDto(company.getId(), company.getName(), String.valueOf(totalDistance), totalPrice));
+                    logisticCompaniesDistance.add(new LogisticCompanyDistanceDto(company.getId(), company.getName(), String.valueOf(totalDistance), totalDurationFormatted, totalPrice));
                 }
             }
 
@@ -114,6 +120,33 @@ public class DeliveryController {
         }
 
         return null;
+    }
+
+    private double convertDurationToSeconds(String durationText) {
+        if (durationText == null || durationText.isEmpty()) {
+            return 0;
+        }
+
+        String[] parts = durationText.split(" ");
+        double time = 0;
+
+        for (int i = 0; i < parts.length; i += 2) {
+            int value = Integer.parseInt(parts[i]);
+            String unit = parts[i + 1];
+            if (unit.contains("hour")) {
+                time += value * 3600;
+            } else if (unit.contains("min")) {
+                time += value * 60;
+            }
+        }
+
+        return time;
+    }
+
+    private String formatDuration(double totalSeconds) {
+        int hours = (int) (totalSeconds / 3600);
+        int minutes = (int) ((totalSeconds % 3600) / 60);
+        return String.format("%d horas %d minutes", hours, minutes);
     }
 
 
