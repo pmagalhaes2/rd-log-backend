@@ -11,5 +11,6 @@ public class LogisticCompanyDistanceDto {
     private Long logistic_id;
     private String logistic_name;
     private String distance;
+    private String duration;
     private Double price_km;
 }
