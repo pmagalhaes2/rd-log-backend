@@ -37,6 +37,10 @@ public class DeliveryController {
         ZipCodeResponse originInfo = zipCodeService.getZipCode(originCep);
         ZipCodeResponse destinationInfo = zipCodeService.getZipCode(destinationCep);
 
+        if (originInfo.getUf() == null || destinationInfo.getUf() == null) {
+            throw new EntityNotFoundException("Erro ao consultar CEP.");
+        }
+
         boolean sameState = verifyState(originInfo, destinationInfo);
 
         if (!sameState) {
@@ -187,7 +191,7 @@ public class DeliveryController {
 
 
     private boolean verifyState(ZipCodeResponse originInfo, ZipCodeResponse destinationInfo) {
-        if (originInfo != null && destinationInfo != null) {
+        if (originInfo.getUf() != null && destinationInfo.getUf() != null) {
             return originInfo.getUf().equals(destinationInfo.getUf());
         }
         return false;
