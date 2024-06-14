@@ -136,7 +136,9 @@ public class DeliveryController {
             if (row.has("elements") && !row.get("elements").getAsJsonArray().isEmpty()) {
                 JsonObject element = row.getAsJsonArray("elements").get(0).getAsJsonObject();
                 if (element.has("duration")) {
-                    return element.getAsJsonObject("duration").get("text").getAsString();
+                    String durationText = element.getAsJsonObject("duration").get("text").getAsString();
+                    double durationInSeconds = convertDurationToSeconds(durationText);
+                    return formatDuration(durationInSeconds);
                 }
             }
         }
@@ -165,10 +167,16 @@ public class DeliveryController {
         return time;
     }
 
-    private String formatDuration(double totalSeconds) {
-        int hours = (int) (totalSeconds / 3600);
-        int minutes = (int) ((totalSeconds % 3600) / 60);
-        return String.format("%d horas %d minutes", hours, minutes);
+    private String formatDuration(double durationInSeconds) {
+        int totalMinutes = (int) (durationInSeconds / 60);
+        int hours = totalMinutes / 60;
+        int minutes = totalMinutes % 60;
+
+        if (hours > 0) {
+            return hours + " hora" + (hours > 1 ? "s" : "") + " " + minutes + " minuto" + (minutes != 1 ? "s" : "");
+        } else {
+            return minutes + " minuto" + (minutes != 1 ? "s" : "");
+        }
     }
 
 
