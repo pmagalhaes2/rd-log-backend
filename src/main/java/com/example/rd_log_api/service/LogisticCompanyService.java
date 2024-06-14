@@ -124,4 +124,11 @@ public class LogisticCompanyService {
                 .collect(Collectors.toList());
     }
 
+    public boolean checkPassword(Long id, String password) throws NotFoundException {
+        LogisticCompany logisticCompany = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(LogisticCompanyDto.class, String.valueOf(id)));
+
+        return passwordEncoder.matches(password, logisticCompany.getPassword());
+    }
+
 }
