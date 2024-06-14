@@ -48,8 +48,7 @@ public class DeliveryController {
         String distanceSupplierStore = extractDistanceText(distanceResponse);
         String durationSupplierStore = extractDurationText(distanceResponse);
 
-        List<LogisticCompanyDto> companiesInOriginState = logisticCompanyService.findCompaniesInSameState(
-                originInfo.getUf());
+        List<LogisticCompanyDto> companiesInOriginState = logisticCompanyService.findCompaniesInSameState(originInfo.getUf());
 
         if (distanceSupplierStore == null || durationSupplierStore == null) {
             throw new NotFoundException(String.class, "Informação de distância ou duração não encontrada.");
@@ -59,16 +58,16 @@ public class DeliveryController {
         double shortestDistance = Double.MAX_VALUE;
 
         LogisticCompanyDistanceDto cheapestCompany = null;
+        LogisticCompanyDistanceDto secondCheapestCompany = null;
         double lowestPrice = Double.MAX_VALUE;
+        double secondLowestPrice = Double.MAX_VALUE;
 
         if (companiesInOriginState.isEmpty()) {
-            throw new EntityNotFoundException(
-                    "Não foram encontradas transportadoras disponíveis para o estado " + "informado.");
+            throw new EntityNotFoundException("Não foram encontradas transportadoras disponíveis para o estado informado.");
         }
 
         for (LogisticCompanyDto company : companiesInOriginState) {
-            String distanceSupplierLogisticCompany = distanceMatrixService.getDistance(originInfo.getCep(),
-                    company.getAddress().getZipCode(), apiKey);
+            String distanceSupplierLogisticCompany = distanceMatrixService.getDistance(originInfo.getCep(), company.getAddress().getZipCode(), apiKey);
             String distanceText = extractDistanceText(distanceSupplierLogisticCompany);
 
             if (distanceText != null) {
@@ -91,8 +90,14 @@ public class DeliveryController {
                 }
 
                 if (totalPrice < lowestPrice) {
+                    secondLowestPrice = lowestPrice;
+                    secondCheapestCompany = cheapestCompany;
                     lowestPrice = totalPrice;
                     cheapestCompany = new LogisticCompanyDistanceDto(company.getId(), company.getName(),
+                            String.valueOf(totalDistance), totalDurationFormatted, totalPrice, false);
+                } else if (totalPrice < secondLowestPrice) {
+                    secondLowestPrice = totalPrice;
+                    secondCheapestCompany = new LogisticCompanyDistanceDto(company.getId(), company.getName(),
                             String.valueOf(totalDistance), totalDurationFormatted, totalPrice, false);
                 }
             }
@@ -104,10 +109,11 @@ public class DeliveryController {
         }
         if (cheapestCompany != null && !cheapestCompany.equals(closestCompany)) {
             results.add(cheapestCompany);
+        } else if (secondCheapestCompany != null) {
+            results.add(secondCheapestCompany);
         }
 
         return ResponseEntity.ok(results);
-
     }
 
     private String extractDistanceText(String distanceResponse) {
