@@ -81,4 +81,16 @@ public class LogisticCompanyController {
         LoginResponse loginResponse = service.login(loginDTO);
         return ResponseEntity.ok(loginResponse);
     }
+
+    @Operation(summary = "Verificar senha da empresa de logística", description = "Verifica se a senha fornecida coincide com a senha cadastrada para a empresa de logística.", tags = {"Logistic Companies"})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Senha verificada com sucesso"), @ApiResponse(responseCode = "401", description = "Senha incorreta"), @ApiResponse(responseCode = "404", description = "Empresa de logística não encontrada")})
+    @PostMapping("/{id}/check-password")
+    public ResponseEntity<Void> checkPassword(@PathVariable Long id, @RequestBody String password) throws NotFoundException {
+        boolean isValidPassword = service.checkPassword(id, password);
+        if (isValidPassword) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
 }
