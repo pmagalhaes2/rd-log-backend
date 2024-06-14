@@ -19,6 +19,9 @@ import java.sql.Time;
 @NoArgsConstructor
 @JsonIgnoreProperties
 public class LogisticCompanyUpdateRequest {
+
+    private Long id;
+
     @NotBlank
     @NotEmpty
     @Schema(example = "John Doe", description = "Updated name of the logistic company")
