@@ -10,6 +10,7 @@ import com.example.rd_log_api.domain.dto.responses.LogisticCompanyCreationRespon
 import com.example.rd_log_api.service.LogisticCompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -82,10 +83,23 @@ public class LogisticCompanyController {
         return ResponseEntity.ok(loginResponse);
     }
 
-    @Operation(summary = "Verificar senha da empresa de logística", description = "Verifica se a senha fornecida coincide com a senha cadastrada para a empresa de logística.", tags = {"Logistic Companies"})
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Senha verificada com sucesso"), @ApiResponse(responseCode = "401", description = "Senha incorreta"), @ApiResponse(responseCode = "404", description = "Empresa de logística não encontrada")})
+    @Operation(summary = "Verify password of logistic company", description = "Check if the password provided matches" +
+            " with password registered to the logistics company", tags = {"Logistic Companies"})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Password verified successfully"), @ApiResponse(responseCode = "401", description = "\n" +
+            "Incorrect password."), @ApiResponse(responseCode = "404", description = "Logistic company not found")})
     @PostMapping("/{id}/check-password")
-    public ResponseEntity<Void> checkPassword(@PathVariable Long id, @RequestBody String password) throws NotFoundException {
+    public ResponseEntity<Void> checkPassword(
+            @PathVariable Long id,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Password to be verified",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(type = "string"),
+                            examples = @ExampleObject(value = "{\"password\": \"your_password\"}")
+                    )
+            )
+            @RequestBody String password) throws NotFoundException {
         boolean isValidPassword = service.checkPassword(id, password);
         if (isValidPassword) {
             return ResponseEntity.ok().build();

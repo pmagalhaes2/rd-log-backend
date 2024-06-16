@@ -1,7 +1,6 @@
 # RD Log API
 
-This is a simple application for managing a logistic module. It allows you to create, read, update, and delete records of logistic companies in a database.
-
+Welcome to the RD Logistics API. This API provides various endpoints to manage and retrieve logistics information.
 
 ## Table of Contents
 
@@ -90,7 +89,15 @@ Example request body for `POST /logistic-companies`:
   "closing_hours": "18:00:00",
   "phone_number": "11970707070",
   "email": "email@example.com",
-  "password": "P@ssW0rd"
+  "password": "P@ssW0rd",
+  "price_km": 1.00,
+  "address": {
+    "value": "Rua da Liberdade",
+    "number": 315,
+    "city": "São Paulo",
+    "state": "SP",
+    "zipCode": "01045010"
+  }
 }
 ```
 
@@ -100,15 +107,67 @@ Example response for `GET /logistic-companies/{id}`:
 
 ```json
 {
-    "id": 6,
-    "name": "John Doe",
-    "cnpj": "11223334444555",
-    "opening_hours": "08:30:00",
-    "closing_hours": "18:00:00",
-    "phone_number": "11970707070",
-    "email": "email@example.com"
+  "id": 1,
+  "name": "John Doe",
+  "cnpj": "11223334444555",
+  "opening_hours": "08:30:00",
+  "closing_hours": "18:00:00",
+  "phone_number": "11970707070",
+  "email": "email@example.com",
+  "price_km": 1.00,
+  "address": {
+    "id": 1,
+    "value": "Rua da Liberdade",
+    "number": 315,
+    "city": "São Paulo",
+    "state": "SP",
+    "zipCode": "01045010",
+    "complement": ""
+  }
 }
 ```
+
+### Delivery Details
+
+-   `GET /delivery-details`: This endpoint retrieves the delivery details between two zip codes including the closest and cheapest logistics companies.
+
+**Request Parameters:**
+
+- `origins`: The origin zip code.
+- `destinations`: The destination zip code.
+- `key`: API key for authentication.
+
+Example response for `GET /delivery-details?origins=12345678&destinations=87654321&key=your_api_key`:
+
+
+```json
+[
+  {
+    "logistic_id": 1,
+    "logistic_name": "Logistic Company A",
+    "distance": "10.5 km",
+    "duration": "15 mins",
+    "price_km": 20.5,
+    "closest_company": true
+  },
+  {
+    "logistic_id": 2,
+    "logistic_name": "Logistic Company B",
+    "distance": "12.0 km",
+    "duration": "18 mins",
+    "price_km": 18.0,
+    "closest_company": false
+  }
+]
+```
+
+## Swagger Documentation
+For detailed information on all available endpoints, please refer to the Swagger documentation. The Swagger UI provides an interactive interface to explore and test the API endpoints.
+
+You can access the Swagger UI at the following URL:
+
+http://localhost:8080/swagger-ui/index.html
+
 
 ## 🔧 Environment Variables
 

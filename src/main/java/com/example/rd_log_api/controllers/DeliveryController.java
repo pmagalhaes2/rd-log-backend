@@ -1,14 +1,20 @@
 package com.example.rd_log_api.controllers;
 
+import com.example.rd_log_api.domain.dto.LogisticCompanyDistanceDto;
 import com.example.rd_log_api.domain.dto.LogisticCompanyDto;
 import com.example.rd_log_api.domain.dto.exception.NotFoundException;
-import com.example.rd_log_api.domain.dto.LogisticCompanyDistanceDto;
 import com.example.rd_log_api.domain.dto.responses.ZipCodeResponse;
 import com.example.rd_log_api.gateways.DistanceMatrixService;
 import com.example.rd_log_api.gateways.ZipCodeService;
 import com.example.rd_log_api.service.LogisticCompanyService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +35,13 @@ public class DeliveryController {
     @Autowired
     private LogisticCompanyService logisticCompanyService;
 
+    @Operation(summary = "Verify delivery details", description = "Returns the closest and cheapest logistic companies based on the given origin and destination zip codes.", tags = {"Delivery"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Delivery details retrieved successfully",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = LogisticCompanyDistanceDto.class)))),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Invalid Request", content = @Content)
+    })
     @GetMapping("/delivery-details")
     public ResponseEntity<List<LogisticCompanyDistanceDto>> verifyDelivery(
             @RequestParam("origins") String originCep,
@@ -53,7 +66,8 @@ public class DeliveryController {
         String distanceSupplierStore = extractDistanceText(distanceResponse);
         String durationSupplierStore = extractDurationText(distanceResponse);
 
-        List<LogisticCompanyDto> companiesInOriginState = logisticCompanyService.findCompaniesInSameState(originInfo.getUf());
+        List<LogisticCompanyDto> companiesInOriginState = logisticCompanyService.findCompaniesInSameState(
+                originInfo.getUf());
 
         if (distanceSupplierStore == null || durationSupplierStore == null) {
             throw new NotFoundException(String.class, "Informação de distância ou duração não encontrada.");
@@ -66,28 +80,35 @@ public class DeliveryController {
         double lowestPrice = Double.MAX_VALUE;
 
         if (companiesInOriginState.isEmpty()) {
-            throw new EntityNotFoundException("Não foram encontradas transportadoras disponíveis para o estado informado.");
+            throw new EntityNotFoundException(
+                    "Não foram encontradas transportadoras disponíveis para o estado informado.");
         }
 
         for (LogisticCompanyDto company : companiesInOriginState) {
-            String distanceSupplierLogisticCompanyToOrigin = distanceMatrixService.getDistance(company.getAddress().getZipCode(), originCep, apiKey);
-            String distanceSupplierOriginToDestination = distanceMatrixService.getDistance(originCep, destinationCep, apiKey);
+            String distanceSupplierLogisticCompanyToOrigin = distanceMatrixService.getDistance(
+                    company.getAddress().getZipCode(), originCep, apiKey);
+            String distanceSupplierOriginToDestination = distanceMatrixService.getDistance(originCep, destinationCep,
+                    apiKey);
 
             String distanceTextOrigin = extractDistanceText(distanceSupplierLogisticCompanyToOrigin);
             String distanceTextDestination = extractDistanceText(distanceSupplierOriginToDestination);
 
             if (distanceTextOrigin != null && distanceTextDestination != null) {
                 double distanceSupplierLogisticCompanyValue = Double.parseDouble(distanceTextOrigin.replace(" km", ""));
-                double distanceSupplierOriginToDestinationValue = Double.parseDouble(distanceTextDestination.replace(" km", ""));
+                double distanceSupplierOriginToDestinationValue = Double.parseDouble(
+                        distanceTextDestination.replace(" km", ""));
                 double totalDistance = distanceSupplierLogisticCompanyValue + distanceSupplierOriginToDestinationValue;
 
-                String durationSupplierLogisticCompanyToOrigin = extractDurationText(distanceSupplierLogisticCompanyToOrigin);
+                String durationSupplierLogisticCompanyToOrigin = extractDurationText(
+                        distanceSupplierLogisticCompanyToOrigin);
                 String durationSupplierOriginToDestination = extractDurationText(distanceSupplierOriginToDestination);
                 String totalDurationFormatted = "";
 
                 if (durationSupplierLogisticCompanyToOrigin != null && durationSupplierOriginToDestination != null) {
-                    double durationSupplierLogisticCompanyValue = convertDurationToSeconds(durationSupplierLogisticCompanyToOrigin);
-                    double durationSupplierOriginToDestinationValue = convertDurationToSeconds(durationSupplierOriginToDestination);
+                    double durationSupplierLogisticCompanyValue = convertDurationToSeconds(
+                            durationSupplierLogisticCompanyToOrigin);
+                    double durationSupplierOriginToDestinationValue = convertDurationToSeconds(
+                            durationSupplierOriginToDestination);
                     double totalDuration = durationSupplierLogisticCompanyValue + durationSupplierOriginToDestinationValue;
                     totalDurationFormatted = formatDuration(totalDuration);
                 }
@@ -111,11 +132,9 @@ public class DeliveryController {
         List<LogisticCompanyDistanceDto> results = new ArrayList<>();
         if (cheapestCompany != null) {
             results.add(cheapestCompany);
-            System.out.println("Empresa mais barata: " + cheapestCompany.toString());
         }
         if (closestCompany != null && !closestCompany.equals(cheapestCompany)) {
             results.add(closestCompany);
-            System.out.println("Empresa mais próxima: " + closestCompany.toString());
         }
 
         return ResponseEntity.ok(results);
