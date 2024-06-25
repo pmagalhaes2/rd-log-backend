@@ -1,7 +1,7 @@
 package com.example.rd_log_api.controllers;
 
 import com.example.rd_log_api.domain.dto.OrdersDto;
-import com.example.rd_log_api.domain.dto.UpdateStatusDto;
+import com.example.rd_log_api.domain.dto.UpdateOrderStatusDto;
 import com.example.rd_log_api.service.OrdersService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class OrdersController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<OrdersDto> updateOrderStatus(@PathVariable Long id,
-                                                       @RequestBody @Valid UpdateStatusDto updateStatusDto) {
+                                                       @RequestBody @Valid UpdateOrderStatusDto updateStatusDto) {
         OrdersDto updateOrderDto = service.updateOrderStatus(id, updateStatusDto);
         return ResponseEntity.ok().body(updateOrderDto);
     }

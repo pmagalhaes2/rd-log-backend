@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateStatusDto {
+public class UpdateOrderStatusDto {
     private String status;
 }
