@@ -28,13 +28,19 @@ public class Orders {
     private String status;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="logistic_company_id", referencedColumnName = "id")
+    @JsonBackReference(value ="logistic_companies")
+    private LogisticCompany logistic_company_id = null;
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="origin_address_id", referencedColumnName = "id")
-    @JsonBackReference(value = "origin-address")
-    private Address originAddress;
+    @JsonBackReference(value = "origin_address")
+    private Address origin_address;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="destination_address_id", referencedColumnName = "id")
-    @JsonBackReference(value = "destination-address")
-    private Address destinationAddress;
+    @JsonBackReference(value = "destination_address")
+    private Address destination_address;
+
 
 }

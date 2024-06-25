@@ -1,9 +1,11 @@
 package com.example.rd_log_api.controllers;
 
 import com.example.rd_log_api.domain.dto.OrdersDto;
+import com.example.rd_log_api.domain.dto.UpdateOrderDto;
 import com.example.rd_log_api.domain.dto.UpdateOrderStatusDto;
 import com.example.rd_log_api.service.OrdersService;
 import jakarta.validation.Valid;
+import org.hibernate.query.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +29,14 @@ public class OrdersController {
         OrdersDto updateOrderDto = service.updateOrderStatus(id, updateStatusDto);
         return ResponseEntity.ok().body(updateOrderDto);
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<OrdersDto> updateOrder(@PathVariable Long id, @RequestBody @Valid UpdateOrderDto updateOrderDto) {
+        OrdersDto updatedOrder = service.updateOrder(id, updateOrderDto);
+        return ResponseEntity.ok().body(updatedOrder);
+
+    }
+
 }
+
 

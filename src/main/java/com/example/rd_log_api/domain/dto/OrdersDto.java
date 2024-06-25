@@ -1,6 +1,7 @@
 package com.example.rd_log_api.domain.dto;
 
 
+import com.example.rd_log_api.domain.entities.LogisticCompany;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -25,5 +26,7 @@ public class OrdersDto {
     private AddressDto origin_address;
 
     private AddressDto destination_address;
+
+    private Long logistic_company_id;
 
 }

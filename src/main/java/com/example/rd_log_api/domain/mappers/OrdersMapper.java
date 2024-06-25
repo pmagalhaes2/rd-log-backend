@@ -9,8 +9,8 @@ import java.util.List;
 
 public class OrdersMapper {
     public static OrdersDto toOrdersDto(Orders entity) {
-        Address originAddress = entity.getOriginAddress();
-        Address destinationAddress = entity.getDestinationAddress();
+        Address originAddress = entity.getOrigin_address();
+        Address destinationAddress = entity.getDestination_address();
         AddressDto originAddressDto = new AddressDto(
                 originAddress.getId(),
                 originAddress.getValue(),
@@ -39,7 +39,8 @@ public class OrdersMapper {
                 entity.getSupplier_id(),
                 entity.getStatus(),
                 originAddressDto,
-                destinationAddressDto
+                destinationAddressDto,
+                entity.getLogistic_company_id().getId()
         );
 
     }
@@ -54,8 +55,11 @@ public class OrdersMapper {
                 dto.getUpdated_at(),
                 dto.getSupplier_id(),
                 dto.getStatus(),
+                dto.getLogistic_company_id(),
                 AddressMapper.toEntityFromAddressDto(originAddressDto),
                 AddressMapper.toEntityFromAddressDto(destinationAddressDto)
+
+
         );
     }
 }

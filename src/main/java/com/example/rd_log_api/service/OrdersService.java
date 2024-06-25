@@ -1,6 +1,7 @@
 package com.example.rd_log_api.service;
 
 import com.example.rd_log_api.domain.dto.OrdersDto;
+import com.example.rd_log_api.domain.dto.UpdateOrderDto;
 import com.example.rd_log_api.domain.dto.UpdateOrderStatusDto;
 import com.example.rd_log_api.domain.dto.exception.NotFoundException;
 import com.example.rd_log_api.domain.mappers.OrdersMapper;
@@ -32,6 +33,13 @@ public class OrdersService {
     public OrdersDto updateOrderStatus(Long id, UpdateOrderStatusDto updateStatusDto) {
         OrdersDto order = getById(id);
         order.setStatus(updateStatusDto.getStatus());
+        return OrdersMapper.toOrdersDto(repository.save(OrdersMapper.toEntityFromDto(order)));
+    }
+
+    public OrdersDto updateOrder(Long id, UpdateOrderDto updateOrderDto) {
+        OrdersDto order = getById(id);
+        order.setStatus(updateOrderDto.getStatus());
+        order.setLogistic_company_id(updateOrderDto.getLogistic_company_id());
         return OrdersMapper.toOrdersDto(repository.save(OrdersMapper.toEntityFromDto(order)));
     }
 }
