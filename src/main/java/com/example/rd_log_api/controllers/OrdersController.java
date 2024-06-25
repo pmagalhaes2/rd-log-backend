@@ -1,12 +1,10 @@
 package com.example.rd_log_api.controllers;
 
 import com.example.rd_log_api.domain.dto.OrdersDto;
-import com.example.rd_log_api.domain.entities.Orders;
-import com.example.rd_log_api.repositories.OrdersRepository;
 import com.example.rd_log_api.service.OrdersService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,17 +16,14 @@ public class OrdersController {
     private OrdersService service;
 
     @GetMapping
-    public List<OrdersDto> getAll() {
-        return service.getAll();
-    };
-
-    @PatchMapping("/{id}")
-    public OrdersDto updateOrder(@PathVariable Long id, @RequestBody @Valid String status) {
-        return service.updateOrder(id, status);
+    public ResponseEntity<List<OrdersDto>> getAll() {
+        return ResponseEntity.ok().body(service.getAll());
     }
 
-
-
-
+    @PatchMapping("/{id}")
+    public ResponseEntity<OrdersDto> updateOrderStatus(@PathVariable Long id, @RequestBody @Valid String status) {
+        OrdersDto updateOrderDto = service.updateOrderStatus(id, status);
+        return ResponseEntity.ok().body(updateOrderDto);
+    }
 }
 

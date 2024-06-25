@@ -45,27 +45,8 @@ public class OrdersMapper {
     }
 
     public static Orders toEntityFromDto (OrdersDto dto) {
-        AddressDto originAddressDto = getOriginAddress();
-        AddressDto destinationAddressDto = getDestinationAddress();
-        Address originAddress = new Address(
-                originAddressDto.getId(),
-                originAddressDto.getValue(),
-                originAddressDto.getNumber(),
-                originAddressDto.getCity(),
-                originAddressDto.getState(),
-                originAddressDto.getZipCode(),
-                originAddressDto.getComplement()
-        );
-
-        Address destinationAddress = new Address(
-                destinationAddressDto.getId(),
-                destinationAddressDto.getValue(),
-                destinationAddressDto.getNumber(),
-                destinationAddressDto.getCity(),
-                destinationAddressDto.getState(),
-                destinationAddressDto.getZipCode(),
-                destinationAddressDto.getComplement()
-        );
+        AddressDto originAddressDto = dto.getOrigin_address();
+        AddressDto destinationAddressDto = dto.getDestination_address();
 
         return new Orders(
                 dto.getId(),
@@ -73,8 +54,8 @@ public class OrdersMapper {
                 dto.getUpdated_at(),
                 dto.getSupplier_id(),
                 dto.getStatus(),
-                originAddress,
-                destinationAddress
+                AddressMapper.toEntityFromAddressDto(originAddressDto),
+                AddressMapper.toEntityFromAddressDto(destinationAddressDto)
         );
     }
 }
