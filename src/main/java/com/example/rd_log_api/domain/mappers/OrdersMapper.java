@@ -1,8 +1,10 @@
 package com.example.rd_log_api.domain.mappers;
 
 import com.example.rd_log_api.domain.dto.AddressDto;
+import com.example.rd_log_api.domain.dto.LogisticCompanyDto;
 import com.example.rd_log_api.domain.dto.OrdersDto;
 import com.example.rd_log_api.domain.entities.Address;
+import com.example.rd_log_api.domain.entities.LogisticCompany;
 import com.example.rd_log_api.domain.entities.Orders;
 
 import java.util.List;
@@ -48,6 +50,7 @@ public class OrdersMapper {
     public static Orders toEntityFromDto (OrdersDto dto) {
         AddressDto originAddressDto = dto.getOrigin_address();
         AddressDto destinationAddressDto = dto.getDestination_address();
+        Long logisticCompanyDto = dto.getLogistic_company_id();
 
         return new Orders(
                 dto.getId(),
@@ -55,11 +58,9 @@ public class OrdersMapper {
                 dto.getUpdated_at(),
                 dto.getSupplier_id(),
                 dto.getStatus(),
-                dto.getLogistic_company_id(),
+                LogisticCompanyMapper.toEntityFromCreationRequest(logisticCompanyDto),
                 AddressMapper.toEntityFromAddressDto(originAddressDto),
                 AddressMapper.toEntityFromAddressDto(destinationAddressDto)
-
-
         );
     }
 }
