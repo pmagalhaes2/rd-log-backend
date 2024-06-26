@@ -8,7 +8,7 @@ import com.example.rd_log_api.domain.entities.LogisticCompany;
 
 public class LogisticCompanyMapper {
 
-    public static LogisticCompany toEntityFromCreationRequest(Long request) {
+    public static LogisticCompany toEntityFromCreationRequest(LogisticCompanyCreationRequest request) {
         AddressDto addressDto = request.getAddress();
         Address address = new Address(
                 addressDto.getId(),
