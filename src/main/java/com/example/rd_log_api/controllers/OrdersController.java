@@ -4,6 +4,7 @@ import com.example.rd_log_api.domain.dto.OrdersDto;
 import com.example.rd_log_api.domain.dto.UpdateOrderDto;
 import com.example.rd_log_api.domain.dto.UpdateOrderStatusDto;
 import com.example.rd_log_api.domain.dto.requests.OrderCreationRequest;
+import com.example.rd_log_api.domain.dto.responses.OrderResponse;
 import com.example.rd_log_api.service.OrdersService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class OrdersController {
     }
 
     @PostMapping
-    public ResponseEntity<OrdersDto> createOrder(@RequestBody @Valid OrderCreationRequest orderCreationRequest) {
-        OrdersDto createdOrdersDto = service.createOrder(orderCreationRequest);
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody @Valid OrderCreationRequest orderCreationRequest) {
+        OrderResponse createdOrdersDto = service.createOrder(orderCreationRequest);
         return ResponseEntity.ok().body(createdOrdersDto);
     }
 
@@ -41,7 +42,6 @@ public class OrdersController {
         OrdersDto updatedOrder = service.updateOrder(id, updateOrderDto);
         return ResponseEntity.ok().body(updatedOrder);
     }
-
 }
 
 
