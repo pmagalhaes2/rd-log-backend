@@ -1,7 +1,7 @@
 package com.example.rd_log_api.domain.dto;
 
 
-import com.example.rd_log_api.domain.entities.LogisticCompany;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties
 public class OrdersDto {
     private Long id;
 
