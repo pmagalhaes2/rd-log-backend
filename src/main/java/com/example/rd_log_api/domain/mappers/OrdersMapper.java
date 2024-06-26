@@ -2,6 +2,8 @@ package com.example.rd_log_api.domain.mappers;
 
 import com.example.rd_log_api.domain.dto.AddressDto;
 import com.example.rd_log_api.domain.dto.OrdersDto;
+import com.example.rd_log_api.domain.dto.requests.OrderCreationRequest;
+import com.example.rd_log_api.domain.dto.responses.OrderResponse;
 import com.example.rd_log_api.domain.entities.Address;
 import com.example.rd_log_api.domain.entities.LogisticCompany;
 import com.example.rd_log_api.domain.entities.Orders;
@@ -65,6 +67,38 @@ public class OrdersMapper {
                 logisticCompany,
                 AddressMapper.toEntityFromAddressDto(originAddressDto),
                 AddressMapper.toEntityFromAddressDto(destinationAddressDto)
+        );
+    }
+
+    public static Orders toEntityFromCreationRequest(OrderCreationRequest request) {
+        AddressDto originAddressDto = request.getOrigin_address();
+        AddressDto destinationAddressDto = request.getDestination_address();
+
+        LogisticCompany logisticCompany = null;
+        if (request.getLogistic_company_id() != null) {
+            logisticCompany = new LogisticCompany();
+            logisticCompany.setId(request.getLogistic_company_id());
+        }
+
+        return new Orders(
+                request.getId(),
+                request.getCreated_at(),
+                request.getUpdated_at(),
+                request.getSupplier_id(),
+                request.getStatus(),
+                logisticCompany,
+                AddressMapper.toEntityFromAddressDto(originAddressDto),
+                AddressMapper.toEntityFromAddressDto(destinationAddressDto)
+        );
+    }
+
+    public static OrderResponse toOrderResponse(Orders entity) {
+        return new OrderResponse(
+                entity.getId(),
+                entity.getCreated_at(),
+                entity.getSupplier_id(),
+                AddressMapper.toAddressDto(entity.getOrigin_address()),
+                AddressMapper.toAddressDto(entity.getDestination_address())
         );
     }
 }
