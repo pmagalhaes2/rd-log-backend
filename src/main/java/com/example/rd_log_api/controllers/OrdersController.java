@@ -3,6 +3,7 @@ package com.example.rd_log_api.controllers;
 import com.example.rd_log_api.domain.dto.OrdersDto;
 import com.example.rd_log_api.domain.dto.UpdateOrderDto;
 import com.example.rd_log_api.domain.dto.UpdateOrderStatusDto;
+import com.example.rd_log_api.domain.dto.requests.OrderCreationRequest;
 import com.example.rd_log_api.service.OrdersService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,12 @@ public class OrdersController {
     @GetMapping
     public ResponseEntity<List<OrdersDto>> getAll() {
         return ResponseEntity.ok().body(service.getAll());
+    }
+
+    @PostMapping
+    public ResponseEntity<OrdersDto> createOrder(@RequestBody @Valid OrderCreationRequest orderCreationRequest) {
+        OrdersDto createdOrdersDto = service.createOrder(orderCreationRequest);
+        return ResponseEntity.ok().body(createdOrdersDto);
     }
 
     @PatchMapping("/{id}/status")

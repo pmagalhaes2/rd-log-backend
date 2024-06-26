@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.sql.Timestamp;
 
 @Entity
@@ -19,8 +22,10 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @CreationTimestamp
     private Timestamp created_at;
 
+    @UpdateTimestamp
     private Timestamp updated_at;
 
     private Long supplier_id;
