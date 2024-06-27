@@ -12,6 +12,7 @@ import com.example.rd_log_api.domain.mappers.OrdersMapper;
 import com.example.rd_log_api.repositories.AddressRepository;
 import com.example.rd_log_api.repositories.LogisticCompanyRepository;
 import com.example.rd_log_api.repositories.OrdersRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,30 +34,32 @@ public class OrdersService {
         return repository.findAll().stream().map(OrdersMapper::toOrdersDto).toList();
     }
 
-    public OrdersDto getById(Long id) {
-        return OrdersMapper.toOrdersDto(repository.findById(id)
-                .orElseThrow(() -> new NotFoundException(OrdersDto.class, String.valueOf(id))));
+    public OrdersDto getById(Long id) throws NotFoundException {
+        return OrdersMapper.toOrdersDto(
+                repository.findById(id).orElseThrow(() -> new NotFoundException(OrdersDto.class, String.valueOf(id))));
     }
 
-    public OrdersDto updateOrderStatus(Long id, UpdateOrderStatusDto updateStatusDto) {
-        Orders order = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException(Orders.class, String.valueOf(id)));
+    @Transactional
+    public OrdersDto updateOrderStatus(Long id, UpdateOrderStatusDto updateStatusDto) throws NotFoundException {
+        OrdersDto order = getById(id);
         order.setStatus(updateStatusDto.getStatus());
-        return OrdersMapper.toOrdersDto(repository.save(order));
+        return OrdersMapper.toOrdersDto(repository.save(OrdersMapper.toEntityFromDto(order)));
     }
 
-    public OrdersDto updateOrder(Long id, UpdateOrderDto updateOrderDto) {
-        Orders order = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException(Orders.class, String.valueOf(id)));
+    @Transactional
+    public OrdersDto updateOrder(Long id, UpdateOrderDto updateOrderDto) throws NotFoundException {
+        OrdersDto order = getById(id);
         order.setStatus(updateOrderDto.getStatus());
 
         if (updateOrderDto.getLogistic_company_id() != null) {
-            LogisticCompany logisticCompany = logisticCompanyRepository.findById(updateOrderDto.getLogistic_company_id())
-                    .orElseThrow(() -> new NotFoundException(LogisticCompany.class, String.valueOf(updateOrderDto.getLogistic_company_id())));
-            order.setLogistic_company(logisticCompany);
+            LogisticCompany logisticCompany = logisticCompanyRepository.findById(
+                            updateOrderDto.getLogistic_company_id())
+                    .orElseThrow(() -> new NotFoundException(LogisticCompany.class,
+                            String.valueOf(updateOrderDto.getLogistic_company_id())));
+            order.setLogistic_company_id(logisticCompany.getId());
         }
-
-        return OrdersMapper.toOrdersDto(repository.save(order));
+        order.setLogistic_company_id(updateOrderDto.getLogistic_company_id());
+        return OrdersMapper.toOrdersDto(repository.save(OrdersMapper.toEntityFromDto(order)));
     }
 
     public OrderResponse createOrder(OrderCreationRequest orderCreationRequest) {
@@ -64,8 +67,10 @@ public class OrdersService {
         newOrder.setStatus("Pendente");
 
         if (orderCreationRequest.getLogistic_company_id() != null) {
-            LogisticCompany logisticCompany = logisticCompanyRepository.findById(orderCreationRequest.getLogistic_company_id())
-                    .orElseThrow(() -> new NotFoundException(LogisticCompany.class, String.valueOf(orderCreationRequest.getLogistic_company_id())));
+            LogisticCompany logisticCompany = logisticCompanyRepository.findById(
+                            orderCreationRequest.getLogistic_company_id())
+                    .orElseThrow(() -> new NotFoundException(LogisticCompany.class,
+                            String.valueOf(orderCreationRequest.getLogistic_company_id())));
             newOrder.setLogistic_company(logisticCompany);
         }
 
