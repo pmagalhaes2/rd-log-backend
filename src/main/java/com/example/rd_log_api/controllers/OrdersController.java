@@ -6,13 +6,22 @@ import com.example.rd_log_api.domain.dto.UpdateOrderStatusDto;
 import com.example.rd_log_api.domain.dto.exception.NotFoundException;
 import com.example.rd_log_api.domain.dto.requests.OrderCreationRequest;
 import com.example.rd_log_api.domain.dto.responses.OrderResponse;
+import com.example.rd_log_api.domain.entities.Address;
+import com.example.rd_log_api.domain.entities.Orders;
 import com.example.rd_log_api.service.OrdersService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -32,10 +41,25 @@ public class OrdersController {
         return ResponseEntity.ok().body(foundedOrder);
     }
 
+    @Operation(summary = "Create an order", description = "Created a new order.", tags = {"Order"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Order created successfully",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OrderResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content)
+    })
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(@RequestBody @Valid OrderCreationRequest orderCreationRequest) {
-        OrderResponse createdOrdersDto = service.createOrder(orderCreationRequest);
-        return ResponseEntity.ok().body(createdOrdersDto);
+        OrderResponse createdOrderResponse = service.createOrder(orderCreationRequest);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdOrderResponse.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(createdOrderResponse);
     }
 
     @Transactional
