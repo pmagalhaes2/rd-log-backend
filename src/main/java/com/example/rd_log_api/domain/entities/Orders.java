@@ -32,10 +32,10 @@ public class Orders {
 
     private String status;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "logistic_company_id", referencedColumnName = "id")
     @JsonBackReference(value = "logistic_companies")
-    private LogisticCompany logistic_company = null;
+    private LogisticCompany logistic_company;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "origin_address_id", referencedColumnName = "id")
@@ -47,6 +47,5 @@ public class Orders {
     @JsonBackReference(value = "destination_address")
     private Address destination_address;
 
-    public Orders(Long id, Timestamp createdAt, Timestamp updatedAt, Long supplierId, String status, Long logisticCompanyId, Address originAddress, Address destinationAddress) {
-    }
+
 }
