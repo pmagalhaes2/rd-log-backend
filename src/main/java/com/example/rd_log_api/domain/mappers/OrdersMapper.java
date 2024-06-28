@@ -10,8 +10,8 @@ import com.example.rd_log_api.domain.entities.Orders;
 
 public class OrdersMapper {
     public static OrdersDto toOrdersDto(Orders entity) {
-        Address originAddress = entity.getOrigin_address();
-        Address destinationAddress = entity.getDestination_address();
+        Address originAddress = entity.getOriginAddress();
+        Address destinationAddress = entity.getDestinationAddress();
         AddressDto originAddressDto = new AddressDto(
                 originAddress.getId(),
                 originAddress.getValue(),
@@ -33,13 +33,13 @@ public class OrdersMapper {
                 destinationAddress.getComplement()
         );
 
-        Long logisticCompanyId = entity.getLogistic_company() != null ? entity.getLogistic_company().getId() : null;
+        Long logisticCompanyId = entity.getLogisticCompany() != null ? entity.getLogisticCompany().getId() : null;
 
         return new OrdersDto(
                 entity.getId(),
-                entity.getCreated_at(),
-                entity.getUpdated_at(),
-                entity.getSupplier_id(),
+                entity.getCreatedAt(),
+                entity.getUpdatedAt(),
+                entity.getSupplierId(),
                 entity.getStatus(),
                 originAddressDto,
                 destinationAddressDto,
@@ -95,10 +95,10 @@ public class OrdersMapper {
     public static OrderResponse toOrderResponse(Orders entity) {
         return new OrderResponse(
                 entity.getId(),
-                entity.getCreated_at(),
-                entity.getSupplier_id(),
-                AddressMapper.toAddressDto(entity.getOrigin_address()),
-                AddressMapper.toAddressDto(entity.getDestination_address())
+                entity.getCreatedAt(),
+                entity.getSupplierId(),
+                AddressMapper.toAddressDto(entity.getOriginAddress()),
+                AddressMapper.toAddressDto(entity.getDestinationAddress())
         );
     }
 }

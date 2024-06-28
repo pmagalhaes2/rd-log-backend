@@ -39,6 +39,17 @@ public class OrdersService {
                 repository.findById(id).orElseThrow(() -> new NotFoundException(OrdersDto.class, String.valueOf(id))));
     }
 
+    public List<Orders> getPendentsOrders(Long logisticCompanyId) {
+        LogisticCompany logisticCompany = logisticCompanyRepository.findById(logisticCompanyId)
+                .orElseThrow(() -> new NotFoundException(LogisticCompany.class, String.valueOf(logisticCompanyId)));
+
+        List<String> status = new ArrayList<>();
+        status.add("Em andamento");
+        status.add("Pendente");
+
+        return repository.findOrdersByStatusInAndLogisticCompany(status, logisticCompany);
+    }
+
     @Transactional
     public OrdersDto updateOrderStatus(Long id, UpdateOrderStatusDto updateStatusDto) throws NotFoundException {
         OrdersDto order = getById(id);
