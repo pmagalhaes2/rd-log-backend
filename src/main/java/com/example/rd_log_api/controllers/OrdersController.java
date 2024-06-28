@@ -45,6 +45,12 @@ public class OrdersController {
         return ResponseEntity.ok().body(foundedOrder);
     }
 
+    @GetMapping("/pendents")
+    public ResponseEntity<List<Orders>> getPendentsOrdersByLogisticId (@RequestParam Long logisticCompanyId) {
+        List<Orders> orders = service.getPendentsOrders(logisticCompanyId);
+        return ResponseEntity.ok().body(orders);
+    }
+
     @Operation(summary = "Create an order", description = "Created a new order.", tags = {"Order"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Order created successfully",
