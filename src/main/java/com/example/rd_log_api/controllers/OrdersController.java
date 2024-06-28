@@ -1,5 +1,6 @@
 package com.example.rd_log_api.controllers;
 
+import com.example.rd_log_api.domain.dto.LogisticCompanyDto;
 import com.example.rd_log_api.domain.dto.OrdersDto;
 import com.example.rd_log_api.domain.dto.UpdateOrderDto;
 import com.example.rd_log_api.domain.dto.UpdateOrderStatusDto;
@@ -30,11 +31,14 @@ public class OrdersController {
     @Autowired
     private OrdersService service;
 
+    @Operation(summary = "Get all orders", description = "Retrieves a list of all orders.", tags = {"Orders"})
     @GetMapping
     public ResponseEntity<List<OrdersDto>> getAll() {
         return ResponseEntity.ok().body(service.getAll());
     }
 
+    @Operation(summary = "Get order by ID", description = "Retrieves a order by its ID.", tags = {"Orders"})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Order found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = OrdersDto.class))), @ApiResponse(responseCode = "404", description = "Order not found", content = @Content)})
     @GetMapping("/{id}")
     public ResponseEntity<OrdersDto> getById(@PathVariable Long id) throws NotFoundException {
         OrdersDto foundedOrder = service.getById(id);
@@ -62,6 +66,8 @@ public class OrdersController {
         return ResponseEntity.created(location).body(createdOrderResponse);
     }
 
+    @Operation(summary = "Update an existing status", description = "Updates an existing status.", tags = {"Orders"})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Status updated successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UpdateOrderStatusDto.class))), @ApiResponse(responseCode = "404", description = "Order not found", content = @Content)})
     @Transactional
     @PatchMapping("/{id}/status")
     public ResponseEntity<OrdersDto> updateOrderStatus(@PathVariable Long id,
@@ -70,6 +76,8 @@ public class OrdersController {
         return ResponseEntity.ok().body(updateOrderDto);
     }
 
+    @Operation(summary = "Update an existing order", description = "Updates an existing order.", tags = {"Orders"})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Order updated successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UpdateOrderDto.class))), @ApiResponse(responseCode = "404", description = "Order not found", content = @Content)})
     @Transactional
     @PatchMapping("/{id}")
     public ResponseEntity<OrdersDto> updateOrder(@PathVariable Long id,
