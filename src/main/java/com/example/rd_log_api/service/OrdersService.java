@@ -58,6 +58,7 @@ public class OrdersService {
                             String.valueOf(updateOrderDto.getLogistic_company_id())));
             order.setLogistic_company_id(logisticCompany.getId());
         }
+        order.setLogistic_company_id(updateOrderDto.getLogistic_company_id());
         return OrdersMapper.toOrdersDto(repository.save(OrdersMapper.toEntityFromDto(order)));
     }
 
