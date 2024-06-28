@@ -16,7 +16,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -72,20 +71,9 @@ public class OrdersService {
                             orderCreationRequest.getLogistic_company_id())
                     .orElseThrow(() -> new NotFoundException(LogisticCompany.class,
                             String.valueOf(orderCreationRequest.getLogistic_company_id())));
-            newOrder.setLogisticCompany(logisticCompany);
+            newOrder.setLogistic_company(logisticCompany);
         }
 
         return OrdersMapper.toOrderResponse(repository.save(newOrder));
-    }
-
-    public List<Orders> getPendentsOrders(Long logisticCompanyId) {
-        LogisticCompany logisticCompany = logisticCompanyRepository.findById(logisticCompanyId)
-                .orElseThrow(() -> new NotFoundException(LogisticCompany.class, String.valueOf(logisticCompanyId)));
-
-        List<String> status = new ArrayList<>();
-        status.add("Em andamento");
-        status.add("Pendente");
-
-        return repository.findOrdersByStatusInAndLogisticCompany(status, logisticCompany);
     }
 }
